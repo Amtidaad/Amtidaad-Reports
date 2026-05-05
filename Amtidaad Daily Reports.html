@@ -1,0 +1,2647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amtidaad Daily Reports</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --brand: #C94B2A;
+  --brand-light: #F2E8E4;
+  --brand-dark: #8B2E14;
+  --bg: #F5F4F1;
+  --surface: #FFFFFF;
+  --surface2: #F0EFEB;
+  --border: #E2E0DB;
+  --border-strong: #C8C5BE;
+  --text: #1A1916;
+  --text2: #6B6860;
+  --text3: #9E9C97;
+  --success: #1A7A4A;
+  --success-bg: #E6F4EC;
+  --warning: #8A5A00;
+  --warning-bg: #FFF3D6;
+  --danger: #C0392B;
+  --danger-bg: #FDECEA;
+  --info: #1A4A7A;
+  --info-bg: #E6EEF8;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; min-height: 100vh; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+/* LOGIN */
+#login-screen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: var(--bg);
+}
+.login-wrap { width: 420px; }
+.login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; }
+.login-mark { width: 44px; height: 44px; background: var(--brand); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.login-mark svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.login-name { font-size: 20px; font-weight: 600; color: var(--text); }
+.login-tagline { font-size: 12px; color: var(--text3); }
+.login-title { font-size: 24px; font-weight: 600; margin-bottom: 6px; }
+.login-sub { font-size: 14px; color: var(--text2); margin-bottom: 28px; }
+.role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.role-btn {
+  border: 1.5px solid var(--border); border-radius: var(--radius); padding: 14px 12px;
+  cursor: pointer; background: var(--surface); text-align: left; font-family: var(--font);
+  transition: all 0.15s;
+}
+.role-btn:hover { border-color: var(--brand); background: var(--brand-light); }
+.role-btn.full-width { grid-column: 1/-1; display: flex; align-items: center; gap: 12px; }
+.role-btn-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+.role-btn-name { font-size: 13px; font-weight: 500; color: var(--text); }
+.role-btn-desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.pin-section { margin-top: 20px; }
+.pin-label { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+.pin-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font); font-size: 14px; background: var(--surface); color: var(--text); outline: none; transition: border-color 0.15s; }
+.pin-input:focus { border-color: var(--brand); }
+.pin-btn { width: 100%; margin-top: 10px; padding: 11px; background: var(--brand); color: #fff; border: none; border-radius: var(--radius-sm); font-family: var(--font); font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; }
+.pin-btn:hover { opacity: 0.9; }
+.login-note { font-size: 11px; color: var(--text3); text-align: center; margin-top: 16px; }
+
+/* APP SHELL */
+#app-shell { display: none; min-height: 100vh; flex-direction: column; }
+.topbar {
+  height: 56px; background: var(--surface); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 24px; gap: 16px; position: sticky; top: 0; z-index: 100;
+}
+.top-logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.top-mark { width: 30px; height: 30px; background: var(--brand); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+.top-mark svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.top-name { font-size: 14px; font-weight: 600; }
+.top-sep { width: 1px; height: 20px; background: var(--border); }
+.top-nav { display: flex; gap: 2px; flex: 1; }
+.top-nav-item {
+  padding: 6px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500;
+  cursor: pointer; color: var(--text2); transition: all 0.15s; border: none; background: none; font-family: var(--font);
+}
+.top-nav-item:hover { color: var(--text); background: var(--surface2); }
+.top-nav-item.active { color: var(--brand); background: var(--brand-light); }
+.top-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.role-pill { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+.user-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.logout-btn { font-size: 12px; color: var(--text3); cursor: pointer; padding: 4px 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: none; font-family: var(--font); transition: all 0.15s; }
+.logout-btn:hover { color: var(--text); border-color: var(--border-strong); }
+
+.main { flex: 1; padding: 24px; max-width: 1200px; margin: 0 auto; width: 100%; }
+
+/* VIEWS */
+.view { display: none; }
+.view.active { display: block; }
+
+/* PAGE HEADER */
+.page-header { margin-bottom: 20px; }
+.page-title { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+.page-sub { font-size: 13px; color: var(--text2); }
+
+/* KPI CARDS */
+.kpi-grid { display: grid; gap: 10px; margin-bottom: 20px; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.kpi-label { font-size: 11px; color: var(--text3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.kpi-value { font-size: 26px; font-weight: 600; color: var(--text); font-family: var(--mono); line-height: 1; }
+.kpi-delta { font-size: 11px; margin-top: 4px; }
+.kpi-delta.up { color: var(--success); }
+.kpi-delta.down { color: var(--danger); }
+.kpi-delta.warn { color: var(--warning); }
+
+/* CARDS */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 16px; }
+.card-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+.card-title-left { display: flex; align-items: center; gap: 8px; }
+
+/* SECTION LABEL */
+.sec-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin: 20px 0 10px; }
+.sec-label:first-child { margin-top: 0; }
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1/-1; }
+.form-label { font-size: 11px; font-weight: 500; color: var(--text2); }
+.form-input { padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font); font-size: 13px; color: var(--text); background: var(--surface); outline: none; transition: border-color 0.15s; }
+.form-input:focus { border-color: var(--brand); }
+.form-input[type=number] { font-family: var(--mono); }
+select.form-input { cursor: pointer; }
+textarea.form-input { resize: vertical; min-height: 72px; }
+
+/* BUTTONS */
+.btn { padding: 8px 18px; border-radius: var(--radius-sm); font-family: var(--font); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
+.btn-primary { background: var(--brand); color: #fff; border-color: var(--brand); }
+.btn-primary:hover { background: var(--brand-dark); }
+.btn-ghost { background: none; color: var(--text2); border-color: var(--border); }
+.btn-ghost:hover { border-color: var(--border-strong); color: var(--text); }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+
+/* STATUS PILLS */
+.pill { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 20px; display: inline-block; }
+.pill-green { background: var(--success-bg); color: var(--success); }
+.pill-amber { background: var(--warning-bg); color: var(--warning); }
+.pill-red { background: var(--danger-bg); color: var(--danger); }
+.pill-blue { background: var(--info-bg); color: var(--info); }
+.pill-gray { background: var(--surface2); color: var(--text2); }
+
+/* DEPT REPORT LIST */
+.dept-list-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.dept-list-item:last-child { border-bottom: none; }
+.dept-list-name { font-size: 13px; font-weight: 500; flex: 1; }
+.dept-list-time { font-size: 11px; color: var(--text3); }
+
+/* ALERT LIST */
+.alert-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.alert-item:last-child { border-bottom: none; }
+.alert-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.alert-dot.red { background: var(--danger); }
+.alert-dot.amber { background: #E8A000; }
+.alert-dot.green { background: #1A7A4A; }
+.alert-text { font-size: 12px; color: var(--text); flex: 1; }
+.alert-dept { font-size: 10px; color: var(--text3); margin-top: 2px; }
+
+/* SUBMISSION HISTORY */
+.history-item { border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; }
+.history-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.history-date { font-size: 12px; font-weight: 500; color: var(--text); }
+.history-time { font-size: 11px; color: var(--text3); }
+.history-kpis { display: flex; gap: 12px; flex-wrap: wrap; }
+.history-kpi { font-size: 11px; color: var(--text2); }
+.history-kpi span { font-weight: 600; color: var(--text); font-family: var(--mono); }
+.history-notes { font-size: 12px; color: var(--text2); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); font-style: italic; }
+.gm-reply-block { background: var(--brand-light); border-left: 3px solid var(--brand); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 10px 12px; margin-top: 10px; }
+.gm-reply-label { font-size: 10px; font-weight: 600; color: var(--brand); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.gm-reply-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+
+/* GM REPLY MODAL */
+.reply-modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-top: 10px; }
+.reply-modal-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.reply-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+
+/* CHAT */
+.chat-wrap { display: flex; flex-direction: column; height: 480px; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 4px 0 16px; display: flex; flex-direction: column; gap: 12px; }
+.chat-msg { display: flex; flex-direction: column; max-width: 82%; }
+.chat-msg.user { align-self: flex-end; }
+.chat-msg.ai { align-self: flex-start; }
+.chat-msg-label { font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+.chat-msg.user .chat-msg-label { text-align: right; }
+.chat-bubble { padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.55; }
+.chat-msg.user .chat-bubble { background: var(--brand); color: #fff; border-radius: 12px 3px 12px 12px; }
+.chat-msg.ai .chat-bubble { background: var(--surface2); color: var(--text); border-radius: 3px 12px 12px 12px; border: 1px solid var(--border); }
+.chat-thinking { display: flex; gap: 4px; align-items: center; padding: 10px 14px; }
+.chat-thinking span { width: 6px; height: 6px; background: var(--text3); border-radius: 50%; animation: bounce 1.2s infinite; }
+.chat-thinking span:nth-child(2) { animation-delay: 0.2s; }
+.chat-thinking span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%,80%,100%{transform:translateY(0);opacity:0.5} 40%{transform:translateY(-5px);opacity:1} }
+.chat-input-row { display: flex; gap: 8px; align-items: flex-end; padding-top: 14px; border-top: 1px solid var(--border); }
+.chat-input-row textarea { flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font); font-size: 13px; resize: none; outline: none; max-height: 100px; background: var(--surface); color: var(--text); transition: border-color 0.15s; }
+.chat-input-row textarea:focus { border-color: var(--brand); }
+.chat-send { width: 38px; height: 38px; background: var(--brand); border: none; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity 0.15s; }
+.chat-send:hover { opacity: 0.9; }
+.chat-send svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.chat-context-note { font-size: 11px; color: var(--text3); text-align: center; margin-bottom: 12px; }
+
+/* REPORT CARDS */
+.report-item { display: flex; align-items: center; gap: 14px; padding: 14px; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; background: var(--surface); }
+.report-icon { width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.report-icon svg { width: 18px; height: 18px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.report-info { flex: 1; }
+.report-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.report-desc { font-size: 11px; color: var(--text2); }
+.report-output { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; margin-top: 10px; font-size: 12px; line-height: 1.7; white-space: pre-wrap; max-height: 400px; overflow-y: auto; }
+
+/* PROGRESS BARS */
+.bar-wrap { margin-bottom: 10px; }
+.bar-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+.bar-track { height: 5px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+
+/* GM DEPT OVERVIEW TABLE */
+.overview-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.overview-table th { text-align: left; padding: 8px 10px; border-bottom: 2px solid var(--border); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text3); }
+.overview-table td { padding: 10px; border-bottom: 1px solid var(--border); color: var(--text); }
+.overview-table tr:last-child td { border-bottom: none; }
+.overview-table tr:hover td { background: var(--surface2); }
+
+/* TWO COL */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+/* TOAST */
+#toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: #fff; padding: 10px 18px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; z-index: 999; opacity: 0; transform: translateY(8px); transition: all 0.25s; pointer-events: none; }
+#toast.show { opacity: 1; transform: translateY(0); }
+
+/* DEPT TAB BAR (for history) */
+.tab-bar { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+.tab-item { padding: 7px 14px; font-size: 12px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; font-weight: 500; }
+.tab-item.active { color: var(--brand); border-bottom-color: var(--brand); }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text3); }
+.empty-state-icon { font-size: 32px; margin-bottom: 10px; }
+.empty-state-text { font-size: 13px; }
+
+/* LOADING */
+.loading-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* TARGET / VARIANCE */
+.target-banner { border-radius: var(--radius); padding: 16px 18px; margin-bottom: 16px; border: 1px solid var(--border); background: var(--surface); }
+.target-banner-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+.target-kpi-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.target-kpi-row:last-child { margin-bottom: 0; }
+.target-kpi-label { font-size: 12px; color: var(--text2); width: 180px; flex-shrink: 0; }
+.target-kpi-bar-wrap { flex: 1; }
+.target-kpi-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); margin-bottom: 3px; }
+.target-kpi-delta { font-size: 11px; font-weight: 500; width: 90px; text-align: right; flex-shrink: 0; }
+.target-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: flex; align-items: center; justify-content: center; }
+.target-modal { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; width: 520px; max-width: 95vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
+.target-modal-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+.target-modal-sub { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+.target-dept-block { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+.target-dept-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.target-dept-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+.target-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.target-field-row:last-child { margin-bottom: 0; }
+
+/* CALENDAR */
+.cal-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 16px; }
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.cal-month-label { font-size: 14px; font-weight: 600; color: var(--text); }
+.cal-nav { display: flex; gap: 6px; }
+.cal-nav-btn { width: 28px; height: 28px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: none; cursor: pointer; font-family: var(--font); font-size: 14px; color: var(--text2); display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.cal-nav-btn:hover { border-color: var(--border-strong); color: var(--text); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.cal-day-label { text-align: center; font-size: 10px; font-weight: 600; color: var(--text3); padding: 4px 0; text-transform: uppercase; letter-spacing: 0.05em; }
+.cal-day { aspect-ratio: 1; border-radius: var(--radius-sm); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-size: 12px; font-weight: 500; position: relative; transition: all 0.15s; border: 1.5px solid transparent; }
+.cal-day:hover:not(.empty):not(.future) { background: var(--surface2); }
+.cal-day.empty { cursor: default; }
+.cal-day.today { border-color: var(--brand); color: var(--brand); font-weight: 700; }
+.cal-day.selected { background: var(--brand); color: #fff !important; border-color: var(--brand); }
+.cal-day.selected:hover { background: var(--brand-dark); }
+.cal-day.has-data::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--success); position: absolute; bottom: 3px; }
+.cal-day.selected.has-data::after { background: rgba(255,255,255,0.8); }
+.cal-day.partial::after { background: var(--warning) !important; }
+.cal-day.future { color: var(--text3); cursor: default; pointer-events: none; }
+.cal-selected-view { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; margin-top: 0; }
+.cal-selected-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.cal-selected-date { font-size: 15px; font-weight: 600; }
+.cal-close-btn { font-size: 12px; color: var(--text3); cursor: pointer; padding: 4px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: none; font-family: var(--font); }
+.cal-close-btn:hover { color: var(--text); }
+
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-wrap">
+    <div class="login-logo">
+      <div class="login-mark">
+        <svg viewBox="0 0 22 22"><path d="M11 3v8M7 7l4 4 4-4M4 18h14"/><path d="M4 13c0 3 7 5 7 5s7-2 7-5"/></svg>
+      </div>
+      <div>
+        <div class="login-name">AMTIDAAD</div>
+        <div class="login-tagline">Fire Safety — Dubai</div>
+      </div>
+    </div>
+    <div class="login-title">Sign in</div>
+    <div class="login-sub">Select your role to continue</div>
+    <div class="role-grid">
+      <div class="role-btn full-width" onclick="selectRole('gm')">
+        <div class="role-btn-icon" style="background:#FDECEA;color:#C0392B;">GM</div>
+        <div>
+          <div class="role-btn-name">General Manager</div>
+          <div class="role-btn-desc">Full access — all departments, dashboard, chat, reports</div>
+        </div>
+      </div>
+      <div class="role-btn" onclick="selectRole('ops')">
+        <div class="role-btn-icon" style="background:#E6EEF8;color:#1A4A7A;font-size:11px;">OPS</div>
+        <div>
+          <div class="role-btn-name">Operations</div>
+          <div class="role-btn-desc">Maintenance · Projects · Refilling</div>
+        </div>
+      </div>
+      <div class="role-btn" onclick="selectRole('sales')">
+        <div class="role-btn-icon" style="background:#E6F4EC;color:#1A7A4A;font-size:11px;">SAL</div>
+        <div>
+          <div class="role-btn-name">Sales & Estimation</div>
+          <div class="role-btn-desc">Contracts · Quotes · Pipeline</div>
+        </div>
+      </div>
+      <div class="role-btn" onclick="selectRole('finance')">
+        <div class="role-btn-icon" style="background:#FFF3D6;color:#8A5A00;font-size:11px;">FIN</div>
+        <div>
+          <div class="role-btn-name">Finance & Admin</div>
+          <div class="role-btn-desc">Invoices · Collections · Compliance</div>
+        </div>
+      </div>
+      <div class="role-btn" onclick="selectRole('procurement')">
+        <div class="role-btn-icon" style="background:#F0EFEB;color:#5F5E5A;font-size:11px;">PRO</div>
+        <div>
+          <div class="role-btn-name">Procurement & Store</div>
+          <div class="role-btn-desc">Stock · Purchasing · Suppliers</div>
+        </div>
+      </div>
+      <div class="role-btn" onclick="selectRole('hr')">
+        <div class="role-btn-icon" style="background:#F9E6EE;color:#8B2E5A;font-size:11px;">HR</div>
+        <div>
+          <div class="role-btn-name">HR</div>
+          <div class="role-btn-desc">Attendance · Visas · Recruitment</div>
+        </div>
+      </div>
+    </div>
+    <div id="pin-section" class="pin-section" style="display:none;">
+      <div class="pin-label">Enter PIN for <span id="pin-role-name" style="font-weight:600;"></span></div>
+      <input class="pin-input" type="password" id="pin-input" maxlength="4" placeholder="4-digit PIN" oninput="checkPin()" onkeydown="if(event.key==='Enter')doLogin()">
+      <div id="pin-error" style="display:none;color:#C0392B;font-size:12px;margin-top:6px;">Incorrect PIN. Please try again.</div>
+      <button class="pin-btn" id="pin-btn" onclick="doLogin()">Continue</button>
+    </div>
+    <div class="login-note">Internal tool for AMTIDAAD team · Contact GM for your department PIN</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-shell" style="display:none;flex-direction:column;">
+  <div class="topbar">
+    <div class="top-logo">
+      <div class="top-mark">
+        <svg viewBox="0 0 22 22"><path d="M11 3v8M7 7l4 4 4-4M4 18h14"/><path d="M4 13c0 3 7 5 7 5s7-2 7-5"/></svg>
+      </div>
+      <div class="top-name">AMTIDAAD</div>
+    </div>
+    <div class="top-sep"></div>
+    <div class="top-nav" id="top-nav"></div>
+    <div class="top-right">
+      <span class="role-pill" id="role-pill"></span>
+      <div class="user-avatar" id="user-avatar"></div>
+      <button class="logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+  <div class="main" id="main-content"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
+const ROLES = {
+  gm:          { label: 'General Manager', short: 'GM',  color: '#C0392B', bg: '#FDECEA', pillBg: '#FDECEA', pillColor: '#C0392B' },
+  ops:         { label: 'Operations',      short: 'OPS', color: '#1A4A7A', bg: '#E6EEF8', pillBg: '#E6EEF8', pillColor: '#1A4A7A' },
+  sales:       { label: 'Sales',           short: 'SAL', color: '#1A7A4A', bg: '#E6F4EC', pillBg: '#E6F4EC', pillColor: '#1A7A4A' },
+  finance:     { label: 'Finance',         short: 'FIN', color: '#8A5A00', bg: '#FFF3D6', pillBg: '#FFF3D6', pillColor: '#8A5A00' },
+  procurement: { label: 'Procurement',     short: 'PRO', color: '#5F5E5A', bg: '#F0EFEB', pillBg: '#F0EFEB', pillColor: '#5F5E5A' },
+  hr:          { label: 'HR',              short: 'HR',  color: '#8B2E5A', bg: '#F9E6EE', pillBg: '#F9E6EE', pillColor: '#8B2E5A' },
+};
+
+const DEPT_FORMS = {
+  ops: {
+    label: 'Operations',
+    sections: [
+      { title: 'Maintenance jobs', fields: [
+        { key: 'ppm_done',       label: 'PPM visits completed',    type: 'number' },
+        { key: 'ppm_overdue',    label: 'Overdue PPM visits',      type: 'number' },
+        { key: 'complaints',     label: 'Client complaints received', type: 'number' },
+      ]},
+      { title: 'Fitout / project jobs', fields: [
+        { key: 'active_projects',    label: 'Active projects on site',   type: 'number' },
+        { key: 'milestones_done',    label: 'Milestones completed today', type: 'number' },
+        { key: 'milestones_delayed', label: 'Delayed milestones',        type: 'number' },
+        { key: 'inspections_passed', label: 'Inspections passed today',  type: 'number' },
+        { key: 'inspections_pending',label: 'Inspections pending',       type: 'number' },
+        { key: 'material_shortages', label: 'Material shortages on site',type: 'number' },
+      ]},
+      { title: 'Refilling services', fields: [
+        { key: 'refill_done',    label: 'Refilling jobs completed',      type: 'number' },
+        { key: 'cylinders_done', label: 'Cylinders refilled (count)',    type: 'number' },
+        { key: 'cylinders_pending', label: 'Cylinders pending pickup/return', type: 'number' },
+        { key: 'refill_delayed', label: 'Refilling jobs delayed',        type: 'number' },
+      ]},
+      { title: 'Team & resources', fields: [
+        { key: 'techs_deployed',    label: 'Technicians deployed today', type: 'number' },
+        { key: 'tech_attendance',   label: 'Technician attendance %',    type: 'number' },
+        { key: 'total_jobs',        label: 'Total jobs completed today', type: 'number' },
+      ]},
+      { title: 'Notes', fields: [
+        { key: 'notes', label: 'Issues / notes for GM', type: 'textarea' },
+      ]},
+    ]
+  },
+  sales: {
+    label: 'Sales & Estimation',
+    sections: [
+      { title: 'Business secured today', fields: [
+        { key: 'amc_value',      label: 'AMC value secured (AED)',      type: 'number' },
+        { key: 'project_value',  label: 'Project value secured (AED)',  type: 'number' },
+        { key: 'refill_value',   label: 'Refilling value secured (AED)',type: 'number' },
+        { key: 'lpo_count',      label: 'LPOs received today',          type: 'number' },
+        { key: 'lpo_value',      label: 'LPO value (AED)',              type: 'number' },
+      ]},
+      { title: 'Quoting & pipeline activity', fields: [
+        { key: 'quotes_sent',    label: 'Quotes sent today',            type: 'number' },
+        { key: 'followups',      label: 'Follow-ups made',              type: 'number' },
+        { key: 'new_leads',      label: 'New leads / enquiries',        type: 'number' },
+        { key: 'amc_renewals',   label: 'AMC renewals followed up',     type: 'number' },
+      ]},
+      { title: 'Notes', fields: [
+        { key: 'notes', label: 'Notes / highlights for GM', type: 'textarea' },
+      ]},
+    ]
+  },
+  finance: {
+    label: 'Finance & Admin',
+    sections: [
+      { title: 'Invoicing & collections', fields: [
+        { key: 'invoices_raised',   label: 'Invoices raised today',        type: 'number' },
+        { key: 'amount_invoiced',   label: 'Amount invoiced (AED)',        type: 'number' },
+        { key: 'payments_collected',label: 'Payments collected (AED)',     type: 'number' },
+        { key: 'overdue_count',     label: 'Overdue invoices count',       type: 'number' },
+        { key: 'overdue_amount',    label: 'Overdue amount (AED)',         type: 'number' },
+        { key: 'overdue_30d',       label: 'Invoices overdue >30 days',    type: 'number' },
+        { key: 'credit_notes',      label: 'Credit notes issued',          type: 'number' },
+        { key: 'supplier_invoices', label: 'Supplier invoices received',   type: 'number' },
+      ]},
+      { title: 'Compliance & admin', fields: [
+        { key: 'revenue_mtd',    label: 'Monthly revenue vs target (AED collected)', type: 'number' },
+        { key: 'payroll_status', label: 'Payroll status', type: 'select', options: ['On track', 'Processed', 'Delayed', 'Pending'] },
+        { key: 'vat_deadline',   label: 'VAT / compliance deadline this week?', type: 'select', options: ['None', 'Yes — filing due', 'Yes — payment due'] },
+      ]},
+      { title: 'Notes', fields: [
+        { key: 'notes', label: 'Notes for GM', type: 'textarea' },
+      ]},
+    ]
+  },
+  procurement: {
+    label: 'Procurement & Store',
+    sections: [
+      { title: 'Stock & materials', fields: [
+        { key: 'received',         label: 'Materials received today',    type: 'number' },
+        { key: 'issued',           label: 'Materials issued to field',   type: 'number' },
+        { key: 'low_stock',        label: 'Low stock items',             type: 'number' },
+        { key: 'out_of_stock',     label: 'Out of stock items',          type: 'number' },
+        { key: 'urgent_requests',  label: 'Urgent material requests',    type: 'number' },
+      ]},
+      { title: 'Purchasing', fields: [
+        { key: 'pos_raised',    label: 'Purchase orders raised',    type: 'number' },
+        { key: 'pending_del',   label: 'Pending deliveries',        type: 'number' },
+        { key: 'spend',         label: 'Procurement spend (AED)',   type: 'number' },
+        { key: 'store_value',   label: 'Store value on hand (AED)',type: 'number' },
+      ]},
+      { title: 'Notes', fields: [
+        { key: 'notes', label: 'Shortages / supplier issues for GM', type: 'textarea' },
+      ]},
+    ]
+  },
+  hr: {
+    label: 'HR',
+    sections: [
+      { title: 'Attendance & leave', fields: [
+        { key: 'total_headcount', label: 'Total headcount today',  type: 'number', hint: 'Total staff on payroll today' },
+        { key: 'present',         label: 'Staff present today',    type: 'number' },
+        { key: 'absent',          label: 'Absences today',         type: 'number' },
+        { key: 'late',            label: 'Late arrivals',          type: 'number' },
+        { key: 'on_leave',        label: 'Approved leaves today',  type: 'number' },
+        { key: 'overtime',        label: 'Overtime hours logged',  type: 'number' },
+      ]},
+      { title: 'Visas & documents', fields: [
+        { key: 'visas_exp',     label: 'Visas expiring this month',              type: 'number' },
+        { key: 'labor_exp',     label: 'Labor cards / work permits expiring',    type: 'number' },
+      ]},
+      { title: 'Recruitment & disciplinary', fields: [
+        { key: 'vacancies',     label: 'Open vacancies',                   type: 'number' },
+        { key: 'interviews',    label: 'Interviews scheduled this week',   type: 'number' },
+        { key: 'new_joiners',   label: 'New joiners today',                type: 'number' },
+        { key: 'resignations',  label: 'Resignations / terminations',      type: 'number' },
+        { key: 'disciplinary',  label: 'Disciplinary cases open',          type: 'number' },
+        { key: 'training',      label: 'Training sessions conducted',      type: 'number' },
+      ]},
+      { title: 'Notes', fields: [
+        { key: 'notes', label: 'HR notes for GM', type: 'textarea' },
+      ]},
+    ]
+  }
+};
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let currentRole = null;
+let selectedPinRole = null;
+let chatHistory = [];
+let reportOutput = '';
+
+// ─── STORAGE HELPERS — Firestore REST API ────────────────────────────────────
+const FB_PROJECT = 'amtidaad-65fe2';
+const FB_KEY = 'AIzaSyAI5Syf5qKcHe7fP0MCcKRHzLw5w5kF_Rc';
+const FB_URL = 'https://firestore.googleapis.com/v1/projects/' + FB_PROJECT + '/databases/(default)/documents/amtidaad';
+
+function sanitizeKey(k) { return k.replace(/:/g,'--').replace(/\s/g,'_'); }
+function desanitizeKey(k) { return k.replace(/--/g,':'); }
+
+async function storageGet(key) {
+  try {
+    const r = await fetch(FB_URL+'/'+sanitizeKey(key)+'?key='+FB_KEY);
+    if(!r.ok) return null;
+    const d = await r.json();
+    if(!d.fields||!d.fields.v) return null;
+    return JSON.parse(d.fields.v.stringValue);
+  } catch(e) { return null; }
+}
+
+async function storageSet(key, val) {
+  try {
+    const r = await fetch(FB_URL+'/'+sanitizeKey(key)+'?key='+FB_KEY, {
+      method:'PATCH',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({fields:{
+        v:{stringValue:JSON.stringify(val)},
+        k:{stringValue:key},
+        t:{stringValue:new Date().toISOString()}
+      }})
+    });
+    return r.ok;
+  } catch(e) { return false; }
+}
+
+async function storageList(prefix) {
+  try {
+    const r = await fetch(FB_URL+'?key='+FB_KEY+'&pageSize=300');
+    if(!r.ok) return [];
+    const d = await r.json();
+    if(!d.documents) return [];
+    const sp = sanitizeKey(prefix);
+    return d.documents
+      .map(doc => doc.name.split('/').pop())
+      .filter(id => id.startsWith(sp))
+      .map(id => {
+        const fd = d.documents.find(doc => doc.name.endsWith(id));
+        return fd&&fd.fields&&fd.fields.k ? fd.fields.k.stringValue : desanitizeKey(id);
+      });
+  } catch(e) { return []; }
+}
+
+function todayKey() {
+  // Always use Dubai timezone (UTC+4) regardless of device timezone
+  const now = new Date();
+  const dubaiTime = new Date(now.getTime() + (4 * 60 * 60 * 1000));
+  return dubaiTime.toISOString().slice(0,10);
+}
+
+function submissionKey(dept, date) { return `sub:${dept}:${date}`; }
+function replyKey(dept, date) { return `reply:${dept}:${date}`; }
+
+// ─── PINS ─────────────────────────────────────────────────────────────────────
+const PINS = {
+  gm:          '9874',
+  ops:         '5544',
+  sales:       '9999',
+  finance:     '9898',
+  procurement: '4321',
+  hr:          '0001',
+};
+
+// ─── LOGIN ─────────────────────────────────────────────────────────────────────
+function selectRole(role) {
+  selectedPinRole = role;
+  document.getElementById('pin-section').style.display = 'block';
+  document.getElementById('pin-role-name').textContent = ROLES[role].label;
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error').style.display = 'none';
+  document.getElementById('pin-input').focus();
+}
+function checkPin() {
+  const v = document.getElementById('pin-input').value;
+  document.getElementById('pin-btn').disabled = v.length < 4;
+  document.getElementById('pin-error').style.display = 'none';
+}
+function doLogin() {
+  const pin = document.getElementById('pin-input').value;
+  if (pin.length < 4) return;
+  if (pin !== PINS[selectedPinRole]) {
+    document.getElementById('pin-error').style.display = 'block';
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-input').focus();
+    return;
+  }
+  currentRole = selectedPinRole;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-shell').style.display = 'flex';
+  initApp();
+}
+function logout() {
+  currentRole = null; chatHistory = [];
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app-shell').style.display = 'none';
+  document.getElementById('pin-section').style.display = 'none';
+}
+
+// ─── APP INIT ──────────────────────────────────────────────────────────────────
+async function initApp() {
+  const role = ROLES[currentRole];
+  // pill
+  const pill = document.getElementById('role-pill');
+  pill.textContent = role.label;
+  pill.style.background = role.pillBg;
+  pill.style.color = role.pillColor;
+  // avatar
+  const av = document.getElementById('user-avatar');
+  av.textContent = role.short;
+  av.style.background = role.pillBg;
+  av.style.color = role.pillColor;
+  // nav
+  buildNav();
+
+  // Show first tab - REST API calls work immediately
+  const tabs = getNavTabs();
+  if (tabs.length) showView(tabs[0].id);
+}
+
+
+
+function getNavTabs() {
+  if (currentRole === 'gm') return [
+    { id: 'dashboard', label: 'Dashboard' },
+    { id: 'dept-overview', label: 'All departments' },
+    { id: 'gm-history', label: 'History' },
+    { id: 'gm-backlog', label: '2025 Backlog' },
+    { id: 'debt-tracker', label: 'Debt tracker' },
+    { id: 'gm-chat', label: 'GM chat' },
+    { id: 'reports', label: 'Reports' },
+  ];
+  if (currentRole === 'ops') return [
+    { id: 'my-report', label: 'Daily report' },
+    { id: 'backfill', label: 'Backfill' },
+    { id: 'ops-backlog', label: '2025 Backlog' },
+    { id: 'dept-calendar', label: 'My history' },
+  ];
+  if (currentRole === 'finance') return [
+    { id: 'my-report', label: 'Daily report' },
+    { id: 'backfill', label: 'Backfill' },
+    { id: 'debt-tracker', label: 'Debt tracker' },
+    { id: 'dept-calendar', label: 'My history' },
+  ];
+  return [
+    { id: 'my-report', label: 'Daily report' },
+    { id: 'backfill', label: 'Backfill' },
+    { id: 'dept-calendar', label: 'My history' },
+  ];
+}
+
+function buildNav() {
+  const nav = document.getElementById('top-nav');
+  nav.innerHTML = '';
+  getNavTabs().forEach(tab => {
+    const btn = document.createElement('button');
+    btn.className = 'top-nav-item';
+    btn.textContent = tab.label;
+    btn.dataset.view = tab.id;
+    btn.onclick = () => showView(tab.id);
+    nav.appendChild(btn);
+  });
+}
+
+function showView(id) {
+  document.querySelectorAll('.top-nav-item').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === id);
+  });
+  const main = document.getElementById('main-content');
+  main.innerHTML = '';
+  const view = document.createElement('div');
+  view.className = 'view active';
+  main.appendChild(view);
+
+  if (id === 'dashboard') renderDashboard(view);
+  else if (id === 'dept-overview') renderDeptOverview(view);
+  else if (id === 'gm-chat') renderChat(view);
+  else if (id === 'reports') renderReports(view);
+  else if (id === 'my-report') renderMyReport(view);
+  else if (id === 'my-history') renderMyHistory(view);
+  else if (id === 'gm-history') renderGMCalendar(view);
+  else if (id === 'dept-calendar') renderDeptCalendar(view);
+  else if (id === 'backfill') renderBackfill(view);
+  else if (id === 'ops-backlog') renderOpsBacklog(view);
+  else if (id === 'gm-backlog') renderGMBacklog(view);
+  else if (id === 'debt-tracker') renderDebtTracker(view);
+}
+
+// ─── DASHBOARD ─────────────────────────────────────────────────────────────────
+async function renderDashboard(el) {
+  el.innerHTML = `<div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;"><div><div class="page-title">Dashboard</div><div class="page-sub">${fmtDate(new Date())} · Good ${greeting()}, GM</div></div><button class="btn btn-ghost btn-sm" onclick="showView('dashboard')" style="margin-top:4px;">↻ Refresh</button></div><div id="dash-body"><div style="color:var(--text3);font-size:13px;padding:20px 0;">Loading today's data...</div></div>`;
+  // Safety timeout
+  const dashTimeout = setTimeout(() => {
+    const b = document.getElementById('dash-body');
+    if (b && b.innerHTML.includes('Loading')) {
+      b.innerHTML = '<div style="color:var(--danger);font-size:13px;padding:20px 0;">Loading timed out. <button class="btn btn-ghost btn-sm" onclick="showView(&#39;dashboard&#39;)">Try again</button></div>';
+    }
+  }, 8000);
+  // Load targets panel async after main body renders
+  setTimeout(() => loadTargetsPanel(existingTargets, targetsSet, monthLabel), 100);
+  const today = todayKey();
+  const depts = ['ops','sales','finance','procurement','hr'];
+  const data = {};
+  for (const d of depts) data[d] = await storageGet(submissionKey(d, today));
+
+  // Check if first of month — prompt GM to set targets
+  const monthVal = currentMonthVal();
+  const existingTargets = await getTargets();
+  const targetsSet = Object.keys(existingTargets).length > 0;
+  const monthLabel = new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+
+  if (isFirstOfMonth() && !targetsSet) {
+    setTimeout(() => {
+      showTargetModal(monthLabel, existingTargets, () => renderDashboard(el));
+    }, 600);
+  }
+
+  clearTimeout(dashTimeout);
+  const body = document.getElementById('dash-body');
+
+  // KPI overview grid
+  const ops = data.ops || {};
+  const sales = data.sales || {};
+  const fin = data.finance || {};
+  const hr = data.hr || {};
+  const proc = data.procurement || {};
+
+  const totalBiz = (num(sales.amc_value) + num(sales.project_value) + num(sales.refill_value));
+
+  body.innerHTML = `
+  <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr);">
+    <div class="kpi-card"><div class="kpi-label">Total jobs today</div><div class="kpi-value">${ops.total_jobs || '—'}</div><div class="kpi-delta">${ops.techs_deployed ? ops.techs_deployed+' techs deployed' : ''}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Business secured (AED)</div><div class="kpi-value">${totalBiz ? fmtAED(totalBiz) : '—'}</div><div class="kpi-delta">${sales.lpo_count ? sales.lpo_count+' LPOs' : ''}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Payments collected (AED)</div><div class="kpi-value">${fin.payments_collected ? fmtAED(num(fin.payments_collected)) : '—'}</div><div class="kpi-delta ${num(fin.overdue_amount)>50000?'down':''}">${fin.overdue_amount ? 'AED '+fmtAED(num(fin.overdue_amount))+' overdue' : ''}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Staff present</div><div class="kpi-value">${hr.present || '—'}</div><div class="kpi-delta ${num(hr.absent)>0?'down':''}">${hr.absent ? hr.absent+' absent' : ''}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Stock alerts</div><div class="kpi-value">${num(proc.out_of_stock)||0}</div><div class="kpi-delta warn">${proc.low_stock ? proc.low_stock+' low stock' : ''}</div></div>
+  </div>
+
+  <div id="targets-panel-placeholder"></div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Alerts & flags</div>
+      <div id="alerts-list">${buildAlerts(data)}</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Department submissions — today</div>
+      ${depts.map(d => `
+        <div class="dept-list-item">
+          <div class="dept-list-name">${DEPT_FORMS[d].label}</div>
+          ${data[d] ? `<span class="pill pill-green">Submitted</span><div class="dept-list-time">${data[d]._time||''}</div>` : '<span class="pill pill-amber">Pending</span>'}
+        </div>`).join('')}
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Operations snapshot</div>
+      ${ops.ppm_done !== undefined ? `
+      <div class="bar-wrap"><div class="bar-meta"><span>PPM completed</span><span>${ops.ppm_done||0}</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,num(ops.ppm_done)*10)}%;background:#378ADD;"></div></div></div>
+      <div class="bar-wrap"><div class="bar-meta"><span>Milestones done</span><span>${ops.milestones_done||0}</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,num(ops.milestones_done)*20)}%;background:#1D9E75;"></div></div></div>
+      <div class="bar-wrap"><div class="bar-meta"><span>Refill jobs</span><span>${ops.refill_done||0}</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,num(ops.refill_done)*15)}%;background:#7F77DD;"></div></div></div>
+      <div class="bar-wrap"><div class="bar-meta"><span>Tech attendance %</span><span>${ops.tech_attendance||0}%</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,num(ops.tech_attendance))}%;background:${num(ops.tech_attendance)<80?'#E24B4A':'#1D9E75'};"></div></div></div>
+      ` : '<div style="color:var(--text3);font-size:12px;">Operations report not yet submitted</div>'}
+    </div>
+    <div class="card">
+      <div class="card-title">Sales snapshot</div>
+      ${sales.amc_value !== undefined ? `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div><div style="font-size:11px;color:var(--text3);margin-bottom:3px;">AMC secured</div><div style="font-size:18px;font-weight:600;font-family:var(--mono);">AED ${fmtAED(num(sales.amc_value))}</div></div>
+        <div><div style="font-size:11px;color:var(--text3);margin-bottom:3px;">Project secured</div><div style="font-size:18px;font-weight:600;font-family:var(--mono);">AED ${fmtAED(num(sales.project_value))}</div></div>
+        <div><div style="font-size:11px;color:var(--text3);margin-bottom:3px;">Refilling secured</div><div style="font-size:18px;font-weight:600;font-family:var(--mono);">AED ${fmtAED(num(sales.refill_value))}</div></div>
+        <div><div style="font-size:11px;color:var(--text3);margin-bottom:3px;">Quotes sent</div><div style="font-size:18px;font-weight:600;font-family:var(--mono);">${sales.quotes_sent||0}</div></div>
+      </div>
+      ` : '<div style="color:var(--text3);font-size:12px;">Sales report not yet submitted</div>'}
+    </div>
+  </div>`;
+}
+
+function buildAlerts(data) {
+  const alerts = [];
+  const ops = data.ops||{}, fin = data.finance||{}, proc = data.procurement||{}, hr = data.hr||{};
+  if (num(ops.ppm_overdue)>0) alerts.push({ color:'red', text:`${ops.ppm_overdue} overdue PPM visits`, dept:'Operations' });
+  if (num(ops.complaints)>0) alerts.push({ color:'red', text:`${ops.complaints} client complaint(s) received`, dept:'Operations' });
+  if (num(ops.milestones_delayed)>0) alerts.push({ color:'amber', text:`${ops.milestones_delayed} delayed project milestone(s)`, dept:'Operations' });
+  if (num(ops.material_shortages)>0) alerts.push({ color:'amber', text:`${ops.material_shortages} material shortage(s) on site`, dept:'Operations' });
+  if (num(fin.overdue_30d)>0) alerts.push({ color:'red', text:`${fin.overdue_30d} invoices overdue >30 days`, dept:'Finance' });
+  if (num(proc.out_of_stock)>0) alerts.push({ color:'red', text:`${proc.out_of_stock} item(s) out of stock`, dept:'Procurement' });
+  if (num(proc.low_stock)>0) alerts.push({ color:'amber', text:`${proc.low_stock} item(s) at low stock`, dept:'Procurement' });
+  if (num(hr.visas_exp)>0) alerts.push({ color:'amber', text:`${hr.visas_exp} visa(s) expiring this month`, dept:'HR' });
+  if (num(hr.absent)>2) alerts.push({ color:'amber', text:`${hr.absent} staff absent today`, dept:'HR' });
+  if (num(hr.disciplinary)>0) alerts.push({ color:'amber', text:`${hr.disciplinary} disciplinary case(s) open`, dept:'HR' });
+  if (!alerts.length) return '<div class="alert-item"><div class="alert-dot green"></div><div class="alert-text">No critical alerts today</div></div>';
+  return alerts.map(a => `<div class="alert-item"><div class="alert-dot ${a.color}"></div><div><div class="alert-text">${a.text}</div><div class="alert-dept">${a.dept}</div></div></div>`).join('');
+}
+
+// ─── DEPT OVERVIEW (GM) ────────────────────────────────────────────────────────
+async function renderDeptOverview(el) {
+  el.innerHTML = `<div class="page-header"><div class="page-title">All departments</div><div class="page-sub">Review today's reports and send replies</div></div><div id="overview-tabs" class="tab-bar"></div><div id="overview-body"></div>`;
+  const depts = ['ops','sales','finance','procurement','hr'];
+  const tabBar = document.getElementById('overview-tabs');
+  depts.forEach((d,i) => {
+    const t = document.createElement('div');
+    t.className = 'tab-item' + (i===0?' active':'');
+    t.textContent = DEPT_FORMS[d].label;
+    t.onclick = () => { document.querySelectorAll('#overview-tabs .tab-item').forEach(x=>x.classList.remove('active')); t.classList.add('active'); loadDeptReport(d); };
+    tabBar.appendChild(t);
+  });
+  loadDeptReport('ops');
+}
+
+async function loadDeptReport(dept) {
+  const body = document.getElementById('overview-body');
+  body.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:16px 0;">Loading...</div>';
+  const today = todayKey();
+  const sub = await storageGet(submissionKey(dept, today));
+  const reply = await storageGet(replyKey(dept, today));
+  const form = DEPT_FORMS[dept];
+
+  if (!sub) {
+    body.innerHTML = `<div class="card"><div class="empty-state"><div class="empty-state-text">${form.label} has not submitted today's report yet.</div></div></div>`;
+    return;
+  }
+
+  let html = `<div class="card"><div class="card-title">${form.label} — ${fmtDate(new Date(today))}</div>`;
+  form.sections.forEach(sec => {
+    if (sec.title === 'Notes') return;
+    html += `<div class="sec-label">${sec.title}</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">`;
+    sec.fields.forEach(f => {
+      if (f.key === 'notes') return;
+      const val = sub[f.key] !== undefined ? sub[f.key] : '—';
+      html += `<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;"><div style="font-size:10px;color:var(--text3);margin-bottom:3px;">${f.label}</div><div style="font-size:16px;font-weight:600;font-family:var(--mono);">${val}</div></div>`;
+    });
+    html += '</div>';
+  });
+  if (sub.notes) html += `<div class="sec-label">Notes from ${form.label}</div><div style="font-size:13px;color:var(--text);font-style:italic;padding:10px;background:var(--surface2);border-radius:var(--radius-sm);">"${sub.notes}"</div>`;
+  if (reply) {
+    html += `<div class="gm-reply-block" style="margin-top:14px;"><div class="gm-reply-label">Your reply — sent</div><div class="gm-reply-text">${reply.text}</div></div>`;
+  }
+  html += `<div style="margin-top:14px;"><div style="font-size:12px;font-weight:600;margin-bottom:8px;">Send GM reply to ${form.label}</div><textarea class="form-input" id="reply-input" placeholder="Write your reply or feedback to ${form.label}..." style="width:100%;margin-bottom:8px;">${reply?reply.text:''}</textarea><div style="display:flex;justify-content:flex-end;"><button class="btn btn-primary btn-sm" onclick="sendReply('${dept}')">Send reply</button></div></div>`;
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+async function sendReply(dept) {
+  const text = document.getElementById('reply-input').value.trim();
+  if (!text) return;
+  const today = todayKey();
+  await storageSet(replyKey(dept, today), { text, time: new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) });
+  showToast('Reply sent to ' + DEPT_FORMS[dept].label);
+  loadDeptReport(dept);
+}
+
+// ─── MY REPORT (DEPT HEAD) ─────────────────────────────────────────────────────
+async function renderMyReport(el) {
+  const dept = currentRole;
+  const form = DEPT_FORMS[dept];
+  const today = todayKey();
+  const existing = await storageGet(submissionKey(dept, today));
+
+  let html = `<div class="page-header"><div class="page-title">${form.label} — Daily report</div><div class="page-sub">${fmtDate(new Date())} · Fill in today's figures and submit</div></div>`;
+  if (existing) html += `<div style="background:var(--success-bg);color:var(--success);padding:10px 14px;border-radius:var(--radius-sm);font-size:12px;font-weight:500;margin-bottom:16px;">Report submitted at ${existing._time}. You can update and resubmit.</div>`;
+  html += `<div class="card"><form id="report-form">`;
+
+  form.sections.forEach(sec => {
+    html += `<div class="sec-label">${sec.title}</div><div class="${sec.title==='Notes'?'':'form-grid'}" style="${sec.title==='Notes'?'':'margin-bottom:14px;'}">`;
+    sec.fields.forEach(f => {
+      const val = existing ? (existing[f.key]||'') : '';
+      if (f.type === 'textarea') {
+        html += `<div class="form-group full"><label class="form-label">${f.label}</label><textarea class="form-input" name="${f.key}" rows="3" placeholder="Optional notes...">${val}</textarea></div>`;
+      } else if (f.type === 'select') {
+        html += `<div class="form-group"><label class="form-label">${f.label}</label><select class="form-input" name="${f.key}">${f.options.map(o=>`<option${val===o?' selected':''}>${o}</option>`).join('')}</select></div>`;
+      } else {
+        html += `<div class="form-group"><label class="form-label">${f.label}</label><input class="form-input" type="number" name="${f.key}" min="0" value="${val}" placeholder="0"></div>`;
+      }
+    });
+    html += '</div>';
+  });
+
+  // For HR — add live attendance % calculator
+  if (dept === 'hr') {
+    html += `<div id="hr-attendance-live" style="background:var(--surface2);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:10px;font-size:13px;color:var(--text2);display:none;">
+      Attendance rate: <strong id="hr-att-pct" style="font-family:var(--mono);color:var(--text);">—</strong>
+      <span id="hr-att-status" style="margin-left:8px;font-size:12px;"></span>
+    </div>`;
+  }
+  html += `<div style="display:flex;justify-content:flex-end;gap:8px;padding-top:4px;"><button type="button" class="btn btn-ghost btn-sm" onclick="clearForm()">Clear</button><button type="button" class="btn btn-primary" onclick="submitReport('${dept}')">Submit report</button></div></form></div>`;
+  html += `<div id="variance-container"></div>`;
+  el.innerHTML = html;
+
+  // HR live attendance calculator
+  if (dept === 'hr') {
+    const calcAtt = () => {
+      const hc = parseFloat(document.querySelector('[name=total_headcount]')?.value) || 0;
+      const pr = parseFloat(document.querySelector('[name=present]')?.value) || 0;
+      const liveEl = document.getElementById('hr-attendance-live');
+      const pctEl = document.getElementById('hr-att-pct');
+      const statusEl = document.getElementById('hr-att-status');
+      if (hc > 0 && pr >= 0) {
+        const pct = Math.round((pr / hc) * 1000) / 10;
+        liveEl.style.display = 'block';
+        pctEl.textContent = pct + '%';
+        if (pct >= 95) {
+          statusEl.textContent = '✓ Meets 95% target';
+          statusEl.style.color = 'var(--success)';
+          pctEl.style.color = 'var(--success)';
+        } else if (pct >= 85) {
+          statusEl.textContent = '⚠ Below 95% target';
+          statusEl.style.color = 'var(--warning)';
+          pctEl.style.color = 'var(--warning)';
+        } else {
+          statusEl.textContent = '✗ Significantly below target';
+          statusEl.style.color = 'var(--danger)';
+          pctEl.style.color = 'var(--danger)';
+        }
+      } else {
+        liveEl.style.display = 'none';
+      }
+    };
+    setTimeout(() => {
+      document.querySelector('[name=total_headcount]')?.addEventListener('input', calcAtt);
+      document.querySelector('[name=present]')?.addEventListener('input', calcAtt);
+      // trigger if already has values
+      calcAtt();
+    }, 100);
+  }
+
+  // If already submitted today, show variance immediately
+  if (existing) {
+    setTimeout(async () => {
+      const varContainer = document.getElementById('variance-container');
+      if (varContainer) await renderVarianceBanner(dept, varContainer);
+    }, 200);
+  }
+}
+
+function clearForm() { document.getElementById('report-form').reset(); }
+
+async function submitReport(dept) {
+  const btn = document.querySelector('.btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving...'; }
+  const form = document.getElementById('report-form');
+  const data = { _time: new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}), _date: todayKey() };
+  // Reliably read all inputs regardless of browser/environment
+  form.querySelectorAll('input[type=number]').forEach(i => { if(i.name) data[i.name] = i.value || '0'; });
+  form.querySelectorAll('input[type=text]').forEach(i => { if(i.name) data[i.name] = i.value; });
+  form.querySelectorAll('select').forEach(i => { if(i.name) data[i.name] = i.value; });
+  form.querySelectorAll('textarea').forEach(i => { if(i.name) data[i.name] = i.value; });
+
+  // For HR — compute and store attendance_pct
+  if (dept === 'hr' && data.total_headcount && parseFloat(data.total_headcount) > 0) {
+    data._attendance_pct = Math.round((parseFloat(data.present||0) / parseFloat(data.total_headcount)) * 1000) / 10;
+  }
+  const ok = await storageSet(submissionKey(dept, todayKey()), data);
+  if (btn) { btn.disabled = false; btn.textContent = 'Submit report'; }
+  if (ok) {
+    showToast('Report submitted successfully');
+    // Show variance banner after submission
+    showView('my-report');
+    setTimeout(async () => {
+      const varContainer = document.getElementById('variance-container');
+      if (varContainer) await renderVarianceBanner(dept, varContainer);
+    }, 300);
+  }
+  else showToast('Error saving — try again');
+}
+
+// ─── MY HISTORY (DEPT HEAD) ───────────────────────────────────────────────────
+async function renderMyHistory(el) {
+  const dept = currentRole;
+  const form = DEPT_FORMS[dept];
+  el.innerHTML = `<div class="page-header"><div class="page-title">My submission history</div><div class="page-sub">${form.label} · Previous daily reports</div></div><div id="history-list"><div style="color:var(--text3);font-size:13px;padding:16px 0;">Loading...</div></div>`;
+
+  const keys = await storageList('sub:'+dept+':');
+  const histEl = document.getElementById('history-list');
+  if (!keys.length) { histEl.innerHTML = '<div class="empty-state"><div class="empty-state-text">No reports submitted yet.</div></div>'; return; }
+
+  const sorted = keys.slice().sort().reverse();
+  let html = '';
+  for (const key of sorted.slice(0,14)) {
+    const sub = await storageGet(key);
+    if (!sub) continue;
+    const date = key.replace('sub:'+dept+':', '');
+    const reply = await storageGet(replyKey(dept, date));
+    html += `<div class="history-item">
+      <div class="history-meta"><div class="history-date">${fmtDate(new Date(date))}</div><div class="history-time">Submitted ${sub._time||''}</div></div>
+      <div class="history-kpis">`;
+    form.sections.forEach(sec => {
+      sec.fields.filter(f=>f.key!=='notes'&&f.type!=='textarea'&&f.type!=='select').slice(0,4).forEach(f => {
+        if (sub[f.key]) html += `<div class="history-kpi">${f.label}: <span>${sub[f.key]}</span></div>`;
+      });
+    });
+    html += '</div>';
+    if (sub.notes) html += `<div class="history-notes">"${sub.notes}"</div>`;
+    if (reply) html += `<div class="gm-reply-block"><div class="gm-reply-label">GM replied</div><div class="gm-reply-text">${reply.text}</div></div>`;
+    html += '</div>';
+  }
+  histEl.innerHTML = html || '<div class="empty-state"><div class="empty-state-text">No reports found.</div></div>';
+}
+
+// ─── GM CHAT ───────────────────────────────────────────────────────────────────
+async function renderChat(el) {
+  el.innerHTML = `
+  <div class="page-header"><div class="page-title">GM Chat</div><div class="page-sub">Ask anything about AMTIDAAD — powered by Claude AI using today's department data</div></div>
+  <div class="card" style="padding:0;">
+    <div style="padding:14px 18px;border-bottom:1px solid var(--border);">
+      <div class="chat-context-note">Claude reads all submitted department reports to answer your questions</div>
+    </div>
+    <div style="padding:16px 18px;">
+      <div class="chat-wrap">
+        <div class="chat-messages" id="chat-messages">
+          ${chatHistory.length ? chatHistory.map(m => bubbleHTML(m)).join('') : `
+          <div class="chat-msg ai"><div class="chat-msg-label">AMTIDAAD Assistant</div>
+          <div class="chat-bubble">Hello! I have access to all department reports submitted today. You can ask me about operations performance, sales figures, outstanding invoices, HR attendance, procurement stock — anything across AMTIDAAD. What would you like to know?</div></div>`}
+        </div>
+        <div class="chat-input-row">
+          <textarea id="chat-input" placeholder="Ask about jobs, revenue, team, overdue invoices..." rows="1" onkeydown="handleChatKey(event)"></textarea>
+          <button class="chat-send" onclick="sendChat()">
+            <svg viewBox="0 0 16 16"><path d="M14 8L2 2l3 6-3 6 12-6z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function bubbleHTML(m) {
+  return `<div class="chat-msg ${m.role}"><div class="chat-msg-label">${m.role==='user'?'You':'AMTIDAAD Assistant'}</div><div class="chat-bubble">${m.content.replace(/\n/g,'<br>')}</div></div>`;
+}
+
+function handleChatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+}
+
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  chatHistory.push({ role: 'user', content: text });
+  const msgs = document.getElementById('chat-messages');
+  msgs.innerHTML += bubbleHTML({ role: 'user', content: text });
+
+  const thinking = document.createElement('div');
+  thinking.className = 'chat-msg ai';
+  thinking.innerHTML = '<div class="chat-msg-label">AMTIDAAD Assistant</div><div class="chat-bubble"><div class="chat-thinking"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(thinking);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  // build context from stored data
+  const today = todayKey();
+  const depts = ['ops','sales','finance','procurement','hr'];
+  const context = {};
+  for (const d of depts) context[d] = await storageGet(submissionKey(d, today));
+
+  const systemPrompt = `You are the AI assistant for AMTIDAAD, a fire safety company in Dubai offering maintenance (PPM & corrective), installation/fitout projects, and FM200/extinguisher refilling services.
+You are speaking directly with the General Manager.
+Today is ${fmtDate(new Date())} (${today}).
+
+Here is today's submitted data from all departments:
+${JSON.stringify(context, null, 2)}
+
+If a department shows null, their report has not been submitted yet.
+Answer concisely and professionally. Use AED for currency. Highlight risks, flag issues, and give actionable insights where relevant. Keep responses under 200 words unless a detailed breakdown is needed.`;
+
+  try {
+    const messages = chatHistory.slice(-10).map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content }));
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: systemPrompt, messages })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Sorry, I could not get a response. Please try again.';
+    chatHistory.push({ role: 'ai', content: reply });
+    thinking.remove();
+    const msgEl = document.createElement('div');
+    msgEl.className = 'chat-msg ai';
+    msgEl.innerHTML = `<div class="chat-msg-label">AMTIDAAD Assistant</div><div class="chat-bubble">${reply.replace(/\n/g,'<br>')}</div>`;
+    msgs.appendChild(msgEl);
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) {
+    thinking.remove();
+    const errEl = document.createElement('div');
+    errEl.className = 'chat-msg ai';
+    errEl.innerHTML = '<div class="chat-msg-label">AMTIDAAD Assistant</div><div class="chat-bubble" style="color:var(--danger);">Could not connect to AI. Please check your connection and try again.</div>';
+    msgs.appendChild(errEl);
+  }
+}
+
+// ─── REPORTS ───────────────────────────────────────────────────────────────────
+function renderReports(el) {
+  const now = new Date();
+  const months = [];
+  for (let i = 0; i < 12; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const val = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    const label = d.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+    months.push({ val, label });
+  }
+  const monthOptions = months.map((m,i) => `<option value="${m.val}"${i===0?' selected':''}>${m.label}</option>`).join('');
+
+  el.innerHTML = `
+  <div class="page-header"><div class="page-title">Reports & export</div><div class="page-sub">Generate AI-powered summaries · Export monthly data as Excel</div></div>
+
+  <div class="report-item"><div class="report-icon" style="background:#E6F4EC;"><svg style="stroke:#1A7A4A;" viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="2"/><path d="M5 7h8M5 10h5"/></svg></div><div class="report-info"><div class="report-title">Morning briefing</div><div class="report-desc">Based on yesterday's department submissions — best read at the start of your day</div></div><button class="btn btn-ghost btn-sm" onclick="generateReport('daily')">Generate</button></div>
+  <div class="report-item"><div class="report-icon" style="background:#E6EEF8;"><svg style="stroke:#1A4A7A;" viewBox="0 0 18 18"><rect x="2" y="2" width="14" height="14" rx="2"/><path d="M5 6h8M5 9h8M5 12h5"/></svg></div><div class="report-info"><div class="report-title">Weekly performance report</div><div class="report-desc">7-day summary across all departments — trends, targets, issues</div></div><button class="btn btn-ghost btn-sm" onclick="generateReport('weekly')">Generate</button></div>
+  <div class="report-item"><div class="report-icon" style="background:#EEEDFE;"><svg style="stroke:#534AB7;" viewBox="0 0 18 18"><path d="M4 14V8M8 14V4M12 14v-6"/></svg></div><div class="report-info"><div class="report-title">Monthly business review</div><div class="report-desc">Full month — revenue, jobs, HR, procurement with variance analysis</div></div><button class="btn btn-ghost btn-sm" onclick="generateReport('monthly')">Generate</button></div>
+  <div class="report-item"><div class="report-icon" style="background:#FDECEA;"><svg style="stroke:#C0392B;" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 6v3l2 2"/></svg></div><div class="report-info"><div class="report-title">Risk & overdue report</div><div class="report-desc">Overdue invoices, pending inspections, low stock, visa expiries, open disciplinary</div></div><button class="btn btn-ghost btn-sm" onclick="generateReport('risk')">Generate</button></div>
+
+  <div style="margin-top:24px;margin-bottom:10px;border-top:1px solid var(--border);padding-top:20px;">
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">Export monthly data</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:14px;">Download all department submissions for a calendar month as an Excel file — one sheet per department.</div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <select class="form-input" id="export-month-sel" style="width:220px;">${monthOptions}</select>
+      <button class="btn btn-primary" onclick="exportMonthData()" id="export-btn">
+        <span id="export-btn-text">Download Excel</span>
+      </button>
+    </div>
+    <div id="export-status" style="margin-top:10px;font-size:12px;color:var(--text3);"></div>
+  </div>
+
+  <div id="report-output"></div>`;
+}
+
+async function generateReport(type) {
+  const outEl = document.getElementById('report-output');
+  outEl.innerHTML = '<div style="padding:16px;color:var(--text3);font-size:13px;">Generating report — please wait...</div>';
+
+  const today = todayKey();
+  const yesterdayDate = new Date(); yesterdayDate.setDate(yesterdayDate.getDate()-1);
+  const yesterday = yesterdayDate.toISOString().slice(0,10);
+  const depts = ['ops','sales','finance','procurement','hr'];
+  const allData = {};
+  for (const d of depts) {
+    const keys = await storageList('sub:'+d+':');
+    allData[d] = {};
+    for (const k of keys.slice().sort().reverse().slice(0,7)) {
+      const date = k.replace('sub:'+d+':', '');
+      allData[d][date] = await storageGet(k);
+    }
+  }
+  // For daily briefing — load yesterday specifically
+  const yesterdayData = {};
+  for (const d of depts) yesterdayData[d] = await storageGet(submissionKey(d, yesterday));
+
+  const prompts = {
+    daily: `Write a concise GM morning briefing for AMTIDAAD fire safety company (Dubai) based on yesterday's department submissions. Yesterday's date: ${yesterday}. Cover: operations (jobs completed, PPM, project milestones, refilling), sales (business secured by type — AMC/project/refilling, LPOs, quotes), finance (invoiced, collected, overdue invoices), HR (attendance, absences, issues), procurement (stock alerts, urgent requests). Flag any risks or issues that need GM attention today. Be direct and professional. Use AED for currency.`,
+    weekly: `Write a weekly performance report for AMTIDAAD fire safety company (Dubai). Analyse the last 7 days of department data provided. Cover: operational performance trends, sales pipeline and contracts won, financial collections vs invoicing, HR attendance patterns, procurement stock situation. Highlight achievements, identify concerns, recommend 3 actions for next week.`,
+    monthly: `Write a monthly business review for AMTIDAAD. Based on available data, provide: revenue summary (invoiced vs collected), operational KPI trends (PPM completion, project milestones, refilling volume), sales performance (business secured by type — AMC/project/refilling), HR summary (attendance, headcount changes, compliance), procurement overview. Include variance analysis where possible.`,
+    risk: `Generate a risk and overdue report for AMTIDAAD. From all submitted department data, identify and list: overdue invoices (amounts and client count), pending inspections, project delays, out-of-stock or critically low items, visa/labor card expiries, open disciplinary cases, overdue PPM visits, and any other flagged risks. Prioritise by urgency. Suggest actions for each.`
+  };
+
+  const dataForReport = type === 'daily' ? yesterdayData : allData;
+  const systemPrompt = `You are a senior business analyst assistant for AMTIDAAD, a fire safety company in Dubai. You specialise in fire maintenance, fitout/installation projects, and FM200/extinguisher refilling services. Be concise, professional, and data-driven. Today is ${fmtDate(new Date())}.
+
+${type === 'daily'
+  ? `Yesterday's department submissions (${yesterday}):\n${JSON.stringify(yesterdayData, null, 2)}`
+  : `All submitted department data (last 7 days per department):\n${JSON.stringify(allData, null, 2)}`
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: systemPrompt, messages: [{ role: 'user', content: prompts[type] }] })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || 'Could not generate report.';
+    const reportTitles = {
+      daily: 'Morning briefing — ' + new Date(yesterday+'T12:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'}),
+      weekly: 'Weekly performance report',
+      monthly: 'Monthly business review',
+      risk: 'Risk & overdue report'
+    };
+    outEl.innerHTML = '<div class="card" style="margin-top:16px;"><div class="card-title">'+reportTitles[type]+'</div><div class="report-output">'+text+'</div></div>';
+  } catch {
+    outEl.innerHTML = '<div style="color:var(--danger);padding:14px;font-size:13px;">Could not generate report. Please check your connection.</div>';
+  }
+}
+
+
+// ─── CALENDAR STATE ────────────────────────────────────────────────────────────
+let calViewDate = new Date(); // tracks which month is shown
+let calSelectedDate = null;
+
+// ─── GM CALENDAR (all departments) ────────────────────────────────────────────
+async function renderGMCalendar(el) {
+  el.innerHTML = `
+    <div class="page-header">
+      <div class="page-title">History</div>
+      <div class="page-sub">Click any date to view all department submissions for that day</div>
+    </div>
+    <div class="two-col" style="align-items:start;">
+      <div id="gm-cal-left">
+        <div class="cal-wrap" id="gm-cal-wrap"></div>
+        <div style="display:flex;gap:12px;font-size:11px;color:var(--text2);margin-top:4px;padding:0 4px;">
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--success);display:inline-block;"></span>All submitted</span>
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--warning);display:inline-block;"></span>Partial</span>
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--border-strong);display:inline-block;"></span>None</span>
+        </div>
+      </div>
+      <div id="gm-cal-detail" style="display:none;"></div>
+    </div>`;
+  await buildGMCal();
+}
+
+async function buildGMCal() {
+  const wrap = document.getElementById('gm-cal-wrap');
+  if (!wrap) return;
+  const depts = ['ops','sales','finance','procurement','hr'];
+  const year = calViewDate.getFullYear();
+  const month = calViewDate.getMonth();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  // find all submission dates for this month
+  const submittedDates = {};
+  for (const d of depts) {
+    const keys = await storageList('sub:'+d+':');
+    keys.forEach(k => {
+      const date = k.replace('sub:'+d+':','');
+      if (!submittedDates[date]) submittedDates[date] = new Set();
+      submittedDates[date].add(d);
+    });
+  }
+
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+
+  let html = `<div class="cal-header">
+    <div class="cal-month-label">${monthNames[month]} ${year}</div>
+    <div class="cal-nav">
+      <button class="cal-nav-btn" onclick="calNavGM(-1)">&#8249;</button>
+      <button class="cal-nav-btn" onclick="calNavGM(0)">Today</button>
+      <button class="cal-nav-btn" onclick="calNavGM(1)">&#8250;</button>
+    </div>
+  </div>
+  <div class="cal-grid">
+    <div class="cal-day-label">Sun</div><div class="cal-day-label">Mon</div><div class="cal-day-label">Tue</div>
+    <div class="cal-day-label">Wed</div><div class="cal-day-label">Thu</div><div class="cal-day-label">Fri</div><div class="cal-day-label">Sat</div>`;
+
+  // empty cells
+  for (let i=0;i<firstDay;i++) html += '<div class="cal-day empty"></div>';
+
+  for (let day=1; day<=daysInMonth; day++) {
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const cellDate = new Date(year, month, day); cellDate.setHours(0,0,0,0);
+    const isFuture = cellDate > today;
+    const isToday = cellDate.getTime() === today.getTime();
+    const isSel = calSelectedDate === dateStr;
+    const subs = submittedDates[dateStr];
+    const hasData = subs && subs.size > 0;
+    const isPartial = hasData && subs.size < depts.length;
+
+    let cls = 'cal-day';
+    if (isFuture) cls += ' future';
+    if (isToday) cls += ' today';
+    if (isSel) cls += ' selected';
+    if (hasData) cls += ' has-data';
+    if (isPartial) cls += ' partial';
+
+    const clickFn = (!isFuture) ? `onclick="gmCalSelect('${dateStr}')"` : '';
+    html += `<div class="${cls}" ${clickFn}><span class="cal-day-num">${day}</span></div>`;
+  }
+  html += '</div>';
+  wrap.innerHTML = html;
+}
+
+async function gmCalSelect(dateStr) {
+  calSelectedDate = dateStr;
+  await buildGMCal();
+  const detail = document.getElementById('gm-cal-detail');
+  detail.style.display = 'block';
+  detail.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:20px 0;">Loading dashboard...</div>';
+
+  const depts = ['ops','sales','finance','procurement','hr'];
+  const data = {};
+  for (const d of depts) data[d] = await storageGet(submissionKey(d, dateStr));
+
+  const hasAny = Object.values(data).some(v=>v!==null);
+  const displayDate = fmtDate(new Date(dateStr + 'T12:00:00'));
+  const ops = data.ops||{}, sales = data.sales||{}, fin = data.finance||{}, hr = data.hr||{}, proc = data.procurement||{};
+  const totalBiz = (num(sales.amc_value)+num(sales.project_value)+num(sales.refill_value));
+
+  let html = `<div class="cal-selected-view">
+    <div class="cal-selected-header">
+      <div>
+        <div class="cal-selected-date">${displayDate}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px;">Historical dashboard snapshot</div>
+      </div>
+      <button class="cal-close-btn" onclick="gmCalClose()">&#10005; Close</button>
+    </div>`;
+
+  if (!hasAny) {
+    html += '<div class="empty-state"><div class="empty-state-text">No department reports submitted on this date.</div></div></div>';
+    detail.innerHTML = html;
+    return;
+  }
+
+  // ── KPI cards (same as live dashboard) ──
+  html += `<div class="kpi-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:14px;">
+    <div class="kpi-card"><div class="kpi-label">Total jobs</div><div class="kpi-value">${ops.total_jobs||'—'}</div><div class="kpi-delta">${ops.techs_deployed?ops.techs_deployed+' techs':''}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Business secured</div><div class="kpi-value">${totalBiz?fmtAED(totalBiz)+'':'—'}</div><div class="kpi-delta">${sales.lpo_count?sales.lpo_count+' LPOs':''}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Payments collected</div><div class="kpi-value">${fin.payments_collected?fmtAED(num(fin.payments_collected)):'—'}</div><div class="kpi-delta ${num(fin.overdue_amount)>50000?'down':''}">${fin.overdue_amount?'AED '+fmtAED(num(fin.overdue_amount))+' overdue':''}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Staff present</div><div class="kpi-value">${hr.present||'—'}</div><div class="kpi-delta ${num(hr.absent)>0?'down':''}">${hr.absent?hr.absent+' absent':''}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Stock alerts</div><div class="kpi-value">${num(proc.out_of_stock)||0}</div><div class="kpi-delta warn">${proc.low_stock?proc.low_stock+' low stock':''}</div></div>
+  </div>`;
+
+  // ── Alerts + submission status ──
+  html += `<div class="two-col" style="margin-bottom:14px;">
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-title">Alerts & flags</div>
+      ${buildAlerts(data)}
+    </div>
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-title">Department submissions</div>
+      ${depts.map(d=>`<div class="dept-list-item"><div class="dept-list-name">${DEPT_FORMS[d].label}</div>${data[d]?`<span class="pill pill-green">Submitted</span><div class="dept-list-time">${data[d]._time||''}</div>`:'<span class="pill pill-amber">Missing</span>'}</div>`).join('')}
+    </div>
+  </div>`;
+
+  // ── Ops + Sales snapshots ──
+  html += `<div class="two-col" style="margin-bottom:14px;">
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-title">Operations snapshot</div>
+      ${ops.ppm_done!==undefined?`
+      <div class="bar-wrap"><div class="bar-meta"><span>PPM completed</span><span>${ops.ppm_done||0}</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,num(ops.ppm_done)*10)}%;background:#378ADD;"></div></div></div>
+      <div class="bar-wrap"><div class="bar-meta"><span>Milestones done</span><span>${ops.milestones_done||0}</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,num(ops.milestones_done)*20)}%;background:#1D9E75;"></div></div></div>
+      <div class="bar-wrap"><div class="bar-meta"><span>Refill jobs</span><span>${ops.refill_done||0}</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,num(ops.refill_done)*15)}%;background:#7F77DD;"></div></div></div>
+      <div class="bar-wrap"><div class="bar-meta"><span>Tech attendance %</span><span>${ops.tech_attendance||0}%</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,num(ops.tech_attendance))}%;background:${num(ops.tech_attendance)<80?'#E24B4A':'#1D9E75'};"></div></div></div>
+      `:'<div style="color:var(--text3);font-size:12px;">Not submitted</div>'}
+    </div>
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-title">Sales snapshot</div>
+      ${sales.amc_value!==undefined?`
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div><div style="font-size:11px;color:var(--text3);margin-bottom:3px;">AMC secured</div><div style="font-size:17px;font-weight:600;font-family:var(--mono);">AED ${fmtAED(num(sales.amc_value))}</div></div>
+        <div><div style="font-size:11px;color:var(--text3);margin-bottom:3px;">Project secured</div><div style="font-size:17px;font-weight:600;font-family:var(--mono);">AED ${fmtAED(num(sales.project_value))}</div></div>
+        <div><div style="font-size:11px;color:var(--text3);margin-bottom:3px;">Refilling secured</div><div style="font-size:17px;font-weight:600;font-family:var(--mono);">AED ${fmtAED(num(sales.refill_value))}</div></div>
+        <div><div style="font-size:11px;color:var(--text3);margin-bottom:3px;">Quotes sent</div><div style="font-size:17px;font-weight:600;font-family:var(--mono);">${sales.quotes_sent||0}</div></div>
+      </div>`:'<div style="color:var(--text3);font-size:12px;">Not submitted</div>'}
+    </div>
+  </div>`;
+
+  // ── Department detail tabs with reply option ──
+  html += `<div class="card" style="margin-bottom:0;">
+    <div class="card-title">Full department data & GM replies</div>
+    <div class="tab-bar" id="hcal-tabs">`;
+  const submittedDepts = depts.filter(d=>data[d]);
+  submittedDepts.forEach((d,i) => {
+    html += `<div class="tab-item${i===0?' active':''}" onclick="gmCalDeptTab('${d}','${dateStr}')" id="hcaltab-${d}">${DEPT_FORMS[d].label}</div>`;
+  });
+  html += `</div><div id="hcal-dept-body"></div></div>`;
+  html += '</div>';
+  detail.innerHTML = html;
+
+  if (submittedDepts.length) gmCalDeptTab(submittedDepts[0], dateStr);
+}
+
+async function gmCalDeptTab(dept, dateStr) {
+  document.querySelectorAll('#hcal-tabs .tab-item').forEach(t => t.classList.remove('active'));
+  const tab = document.getElementById('hcaltab-'+dept);
+  if (tab) tab.classList.add('active');
+
+  const body = document.getElementById('hcal-dept-body');
+  body.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:10px 0;">Loading...</div>';
+
+  const sub = await storageGet(submissionKey(dept, dateStr));
+  const reply = await storageGet(replyKey(dept, dateStr));
+  const form = DEPT_FORMS[dept];
+
+  if (!sub) { body.innerHTML = '<div style="color:var(--text3);font-size:12px;padding:10px 0;">No data submitted.</div>'; return; }
+
+  let html = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0;">`;
+  form.sections.forEach(sec => {
+    if (sec.title === 'Notes') return;
+    sec.fields.forEach(f => {
+      if (f.key === 'notes') return;
+      const val = sub[f.key] !== undefined ? sub[f.key] : '—';
+      html += `<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;"><div style="font-size:10px;color:var(--text3);margin-bottom:3px;">${f.label}</div><div style="font-size:15px;font-weight:600;font-family:var(--mono);">${val}</div></div>`;
+    });
+  });
+  html += '</div>';
+
+  if (sub.notes) html += `<div style="font-size:12px;color:var(--text);font-style:italic;padding:10px;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:10px;">"${sub.notes}"</div>`;
+
+  if (reply) {
+    html += `<div class="gm-reply-block"><div class="gm-reply-label">GM reply — sent ${reply.time||''}</div><div class="gm-reply-text">${reply.text}</div></div>`;
+  }
+  html += `<div style="margin-top:12px;">
+    <div style="font-size:12px;font-weight:600;margin-bottom:6px;">${reply?'Update reply':'Send reply'} to ${form.label}</div>
+    <textarea class="form-input" id="hcal-reply-input" style="width:100%;margin-bottom:6px;" placeholder="Write reply...">${reply?reply.text:''}</textarea>
+    <div style="display:flex;justify-content:flex-end;"><button class="btn btn-primary btn-sm" onclick="sendHistoricalReply('${dept}','${dateStr}')">Send reply</button></div>
+  </div>`;
+
+  body.innerHTML = html;
+}
+
+async function sendHistoricalReply(dept, dateStr) {
+  const text = document.getElementById('hcal-reply-input').value.trim();
+  if (!text) return;
+  await storageSet(replyKey(dept, dateStr), { text, time: new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) });
+  showToast('Reply sent to ' + DEPT_FORMS[dept].label);
+  gmCalDeptTab(dept, dateStr);
+}
+
+function gmCalClose() {
+  calSelectedDate = null;
+  document.getElementById('gm-cal-detail').style.display = 'none';
+  buildGMCal();
+}
+
+function calNavGM(dir) {
+  if (dir === 0) { calViewDate = new Date(); }
+  else { calViewDate = new Date(calViewDate.getFullYear(), calViewDate.getMonth()+dir, 1); }
+  calSelectedDate = null;
+  const detail = document.getElementById('gm-cal-detail');
+  if (detail) detail.style.display = 'none';
+  buildGMCal();
+}
+
+// ─── DEPT CALENDAR (dept head view) ───────────────────────────────────────────
+let deptCalViewDate = new Date();
+let deptCalSelected = null;
+
+async function renderDeptCalendar(el) {
+  el.innerHTML = `
+    <div class="page-header">
+      <div class="page-title">My calendar</div>
+      <div class="page-sub">Click any submitted date to review your report and see GM comments</div>
+    </div>
+    <div class="two-col" style="align-items:start;">
+      <div>
+        <div class="cal-wrap" id="dept-cal-wrap"></div>
+        <div style="display:flex;gap:12px;font-size:11px;color:var(--text2);margin-top:4px;padding:0 4px;">
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--success);display:inline-block;"></span>Submitted</span>
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--brand);display:inline-block;"></span>GM commented</span>
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--border-strong);display:inline-block;"></span>No report</span>
+        </div>
+      </div>
+      <div id="dept-cal-detail" style="display:none;"></div>
+    </div>`;
+  await buildDeptCal();
+}
+
+async function buildDeptCal() {
+  const wrap = document.getElementById('dept-cal-wrap');
+  if (!wrap) return;
+  const dept = currentRole;
+  const year = deptCalViewDate.getFullYear();
+  const month = deptCalViewDate.getMonth();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  const keys = await storageList('sub:'+dept+':');
+  const submittedSet = new Set(keys.map(k => k.replace('sub:'+dept+':','')));
+
+  // check which have GM replies
+  const repliedSet = new Set();
+  for (const dateStr of submittedSet) {
+    const reply = await storageGet(replyKey(dept, dateStr));
+    if (reply) repliedSet.add(dateStr);
+  }
+
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+
+  let html = `<div class="cal-header">
+    <div class="cal-month-label">${monthNames[month]} ${year}</div>
+    <div class="cal-nav">
+      <button class="cal-nav-btn" onclick="calNavDept(-1)">&#8249;</button>
+      <button class="cal-nav-btn" onclick="calNavDept(0)">Today</button>
+      <button class="cal-nav-btn" onclick="calNavDept(1)">&#8250;</button>
+    </div>
+  </div>
+  <div class="cal-grid">
+    <div class="cal-day-label">Sun</div><div class="cal-day-label">Mon</div><div class="cal-day-label">Tue</div>
+    <div class="cal-day-label">Wed</div><div class="cal-day-label">Thu</div><div class="cal-day-label">Fri</div><div class="cal-day-label">Sat</div>`;
+
+  for (let i=0;i<firstDay;i++) html += '<div class="cal-day empty"></div>';
+
+  for (let day=1; day<=daysInMonth; day++) {
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const cellDate = new Date(year, month, day); cellDate.setHours(0,0,0,0);
+    const isFuture = cellDate > today;
+    const isToday = cellDate.getTime() === today.getTime();
+    const isSel = deptCalSelected === dateStr;
+    const hasData = submittedSet.has(dateStr);
+    const hasReply = repliedSet.has(dateStr);
+
+    let cls = 'cal-day';
+    if (isFuture) cls += ' future';
+    if (isToday) cls += ' today';
+    if (isSel) cls += ' selected';
+    if (hasData) cls += ' has-data';
+    // override dot color for GM reply
+    let extraStyle = '';
+    if (hasReply && !isSel) extraStyle = 'style="--success:var(--brand);"';
+
+    const clickFn = (!isFuture) ? `onclick="deptCalSelect('${dateStr}')"` : '';
+    html += `<div class="${cls}" ${clickFn} ${extraStyle} title="${hasData?(hasReply?'Submitted · GM replied':'Submitted'):''}"><span class="cal-day-num">${day}</span></div>`;
+  }
+  html += '</div>';
+  wrap.innerHTML = html;
+}
+
+async function deptCalSelect(dateStr) {
+  deptCalSelected = dateStr;
+  await buildDeptCal();
+
+  const dept = currentRole;
+  const form = DEPT_FORMS[dept];
+  const detail = document.getElementById('dept-cal-detail');
+  detail.style.display = 'block';
+  detail.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:20px 0;">Loading...</div>';
+
+  const sub = await storageGet(submissionKey(dept, dateStr));
+  const reply = await storageGet(replyKey(dept, dateStr));
+  const displayDate = fmtDate(new Date(dateStr + 'T12:00:00'));
+
+  let html = `<div class="cal-selected-view">
+    <div class="cal-selected-header">
+      <div>
+        <div class="cal-selected-date">${displayDate}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px;">${sub ? 'Submitted at '+sub._time : 'No report submitted'}</div>
+      </div>
+      <button class="cal-close-btn" onclick="deptCalClose()">&#10005; Close</button>
+    </div>`;
+
+  if (!sub) {
+    html += `<div style="background:var(--warning-bg);border-radius:var(--radius-sm);padding:14px;text-align:center;">
+      <div style="font-size:13px;color:var(--warning);font-weight:500;">No report was submitted on this date.</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:4px;">Only days with submitted reports can be reviewed.</div>
+    </div>`;
+  } else {
+    // GM reply banner — show prominently at top if exists
+    if (reply) {
+      html += `<div style="background:var(--brand-light);border:1.5px solid var(--brand);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--brand);display:inline-block;"></span>
+          <span style="font-size:11px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:0.06em;">GM Comment · ${reply.time||''}</span>
+        </div>
+        <div style="font-size:13px;color:var(--text);line-height:1.55;">${reply.text}</div>
+      </div>`;
+    } else {
+      html += `<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--border-strong);display:inline-block;flex-shrink:0;"></span>
+        <span style="font-size:12px;color:var(--text3);">No GM comment on this report yet.</span>
+      </div>`;
+    }
+
+    // All KPI data sections
+    form.sections.forEach(sec => {
+      if (sec.title === 'Notes') return;
+      html += `<div class="sec-label">${sec.title}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">`;
+      sec.fields.forEach(f => {
+        if (f.key === 'notes') return;
+        const val = sub[f.key] !== undefined && sub[f.key] !== '' ? sub[f.key] : '—';
+        html += `<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:3px;">${f.label}</div>
+          <div style="font-size:16px;font-weight:600;font-family:var(--mono);color:var(--text);">${val}</div>
+        </div>`;
+      });
+      html += '</div>';
+    });
+
+    if (sub.notes) {
+      html += `<div class="sec-label">Your notes to GM</div>
+        <div style="font-size:12px;color:var(--text);font-style:italic;padding:10px 12px;background:var(--surface2);border-radius:var(--radius-sm);line-height:1.55;">"${sub.notes}"</div>`;
+    }
+  }
+
+  html += '</div>';
+  detail.innerHTML = html;
+}
+
+function deptCalClose() {
+  deptCalSelected = null;
+  document.getElementById('dept-cal-detail').style.display = 'none';
+  buildDeptCal();
+}
+
+function calNavDept(dir) {
+  if (dir === 0) { deptCalViewDate = new Date(); }
+  else { deptCalViewDate = new Date(deptCalViewDate.getFullYear(), deptCalViewDate.getMonth()+dir, 1); }
+  deptCalSelected = null;
+  const detail = document.getElementById('dept-cal-detail');
+  if (detail) detail.style.display = 'none';
+  buildDeptCal();
+}
+
+
+
+
+
+// ─── TARGET KPI DEFINITIONS ───────────────────────────────────────────────────
+const TARGET_KPIS = {
+  ops:         [
+    { key:'total_jobs',      label:'Total jobs completed',     unit:'jobs',    lowerBetter:false },
+    { key:'ppm_done',        label:'PPM visits completed',     unit:'visits',  lowerBetter:false },
+    { key:'tech_attendance', label:'Technician attendance %',  unit:'%',       lowerBetter:false },
+  ],
+  sales:       [
+    { key:'_biz_secured',    label:'Business secured (AED)',   unit:'AED',     lowerBetter:false, computed: d => num(d.amc_value)+num(d.project_value)+num(d.refill_value) },
+    { key:'quotes_sent',     label:'Quotes sent',              unit:'quotes',  lowerBetter:false },
+    { key:'new_leads',       label:'New leads / enquiries',    unit:'leads',   lowerBetter:false },
+  ],
+  finance:     [
+    { key:'payments_collected', label:'Payments collected (AED)', unit:'AED',  lowerBetter:false },
+    { key:'amount_invoiced',    label:'Amount invoiced (AED)',    unit:'AED',  lowerBetter:false },
+    { key:'overdue_amount',     label:'Overdue amount (AED)',     unit:'AED',  lowerBetter:true  },
+  ],
+  procurement: [
+    { key:'out_of_stock',    label:'Out of stock items',       unit:'items',   lowerBetter:true  },
+    { key:'urgent_requests', label:'Urgent material requests', unit:'requests',lowerBetter:true  },
+    { key:'spend',           label:'Procurement spend (AED)',  unit:'AED',     lowerBetter:true  },
+  ],
+  hr:          [
+    { key:'_attendance_pct', label:'Attendance rate',          unit:'%',       lowerBetter:false, computed: d => num(d.total_headcount) > 0 ? Math.round((num(d.present)/num(d.total_headcount))*1000)/10 : 0 },
+    { key:'absent',          label:'Absences today',           unit:'absent',  lowerBetter:true  },
+    { key:'visas_exp',       label:'Visas expiring this month',unit:'visas',   lowerBetter:true  },
+  ],
+};
+
+function targetKey(monthVal) { return 'targets:' + monthVal; }
+function currentMonthVal() {
+  const now = new Date();
+  const dubai = new Date(now.getTime() + (4 * 60 * 60 * 1000));
+  return dubai.getFullYear() + '-' + String(dubai.getMonth()+1).padStart(2,'0');
+}
+function isFirstOfMonth() {
+  const now = new Date();
+  const dubai = new Date(now.getTime() + (4 * 60 * 60 * 1000));
+  return dubai.getDate() === 1;
+}
+
+// Get stored targets for current month
+async function getTargets() {
+  const t = await storageGet(targetKey(currentMonthVal())) || {};
+
+  // Always default HR attendance to 95% unless GM changed it
+  if (t['hr__attendance_pct'] === undefined) t['hr__attendance_pct'] = 95;
+
+  // Auto-calculate overdue target = 15% of last month's total invoiced amount
+  // Only auto-set if GM hasn't manually overridden it
+  if (!t['_overdue_manual_override']) {
+    const lastMonth = getLastMonthVal();
+    const finKeys = await storageList('sub:finance:');
+    const lastMonthKeys = finKeys.filter(k => k.includes(':' + lastMonth));
+    let lastMonthInvoiced = 0;
+    for (const k of lastMonthKeys) {
+      const sub = await storageGet(k);
+      if (sub) lastMonthInvoiced += num(sub.amount_invoiced);
+    }
+    // Use actual last month submissions if available, otherwise use fixed base of 404,000
+    const baseInvoiced = lastMonthInvoiced > 0 ? lastMonthInvoiced : 404000;
+    t['finance_overdue_amount'] = Math.round(baseInvoiced * 0.15);
+    t['_overdue_auto'] = Math.round(baseInvoiced * 0.15);
+    t['_overdue_based_on'] = Math.round(baseInvoiced);
+  }
+
+  return t;
+}
+
+function getLastMonthVal() {
+  const now = new Date();
+  const dubai = new Date(now.getTime() + (4 * 60 * 60 * 1000));
+  const lastMonth = new Date(dubai.getFullYear(), dubai.getMonth() - 1, 1);
+  return lastMonth.getFullYear() + '-' + String(lastMonth.getMonth()+1).padStart(2,'0');
+}
+async function saveTargets(targets) {
+  return await storageSet(targetKey(currentMonthVal()), targets);
+}
+
+// Compute MTD actual for a dept KPI by summing all submissions this month
+async function getMTD(dept, kpiDef) {
+  const month = currentMonthVal();
+  const keys = await storageList('sub:' + dept + ':');
+  const monthKeys = keys.filter(k => k.includes(':' + month));
+  let total = 0;
+  for (const k of monthKeys) {
+    const sub = await storageGet(k);
+    if (!sub) continue;
+    if (kpiDef.computed) {
+      total += kpiDef.computed(sub);
+    } else {
+      // For % KPIs (attendance) use average not sum
+      if (kpiDef.unit === '%') {
+        total += num(sub[kpiDef.key]);
+      } else {
+        total += num(sub[kpiDef.key]);
+      }
+    }
+  }
+  // Average for % KPIs
+  if (kpiDef.unit === '%' && monthKeys.length > 0) {
+    total = total / monthKeys.length;
+  }
+  return Math.round(total * 10) / 10;
+}
+
+// ─── TARGET MODAL (GM sets targets) ──────────────────────────────────────────
+function showTargetModal(monthLabel, existingTargets, onSave) {
+  const depts = ['ops','sales','finance','procurement','hr'];
+  const deptLabels = { ops:'Operations', sales:'Sales & Estimation', finance:'Finance & Admin', procurement:'Procurement & Store', hr:'HR' };
+
+  let html = `<div class="target-modal-overlay" id="target-overlay">
+    <div class="target-modal">
+      <div class="target-modal-title">Set monthly targets</div>
+      <div class="target-modal-sub">${monthLabel} · Enter your targets for each department KPI</div>`;
+
+  depts.forEach(dept => {
+    const kpis = TARGET_KPIS[dept];
+    html += `<div class="target-dept-block">
+      <div class="target-dept-name">${deptLabels[dept]}</div>
+      <div class="target-field-row">`;
+    kpis.forEach(k => {
+      const isAutoOverdue = dept === 'finance' && k.key === 'overdue_amount' && !existingTargets['_overdue_manual_override'];
+      const autoVal = existingTargets['_overdue_auto'];
+      const basedOn = existingTargets['_overdue_based_on'];
+      const existing = existingTargets[dept+'_'+k.key] || '';
+
+      if (isAutoOverdue) {
+        html += `<div class="form-group" style="grid-column:1/-1;">
+          <label class="form-label" style="display:flex;align-items:center;gap:6px;">
+            ${k.label} (max) — AED
+            <span style="background:var(--info-bg);color:var(--info);font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500;">Auto — 15% of last month</span>
+          </label>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <input class="form-input" type="number" min="0" id="t_${dept}_${k.key}" value="${autoVal||existing||150000}" style="flex:1;">
+            <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('override-note').style.display='block';document.querySelector('[id=\'t_finance_overdue_amount\']').focus();" style="white-space:nowrap;font-size:11px;">Override</button>
+          </div>
+          <div id="override-note" style="display:none;font-size:11px;color:var(--warning);margin-top:3px;">Editing this will override the auto-calculation for this month.</div>
+          ${basedOn ? `<div style="font-size:11px;color:var(--text3);margin-top:3px;">Based on last month's invoiced total: AED ${Math.round(basedOn).toLocaleString()} × 15% = AED ${(autoVal||0).toLocaleString()}</div>` : `<div style="font-size:11px;color:var(--text3);margin-top:3px;">No last month data yet — using AED 150,000 default. Will auto-update next month.</div>`}
+        </div>`;
+      } else {
+        html += `<div class="form-group">
+          <label class="form-label">${k.label} ${k.lowerBetter?'(max)':'(target)'} — ${k.unit}</label>
+          <input class="form-input" type="number" min="0" id="t_${dept}_${k.key}" value="${existing}" placeholder="Enter target">
+        </div>`;
+      }
+    });
+    html += `</div></div>`;
+  });
+
+  html += `<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+    <button class="btn btn-ghost" onclick="closeTargetModal()">Skip for now</button>
+    <button class="btn btn-primary" onclick="saveTargetModal()">Save targets</button>
+  </div></div></div>`;
+
+  document.body.insertAdjacentHTML('beforeend', html);
+  window._onTargetSave = onSave;
+}
+
+function closeTargetModal() {
+  const overlay = document.getElementById('target-overlay');
+  if (overlay) overlay.remove();
+}
+
+async function saveTargetModal() {
+  const depts = ['ops','sales','finance','procurement','hr'];
+  const existingT = await getTargets();
+  const targets = {};
+  depts.forEach(dept => {
+    TARGET_KPIS[dept].forEach(k => {
+      const el = document.getElementById('t_'+dept+'_'+k.key);
+      if (el && el.value) targets[dept+'_'+k.key] = parseFloat(el.value);
+    });
+  });
+  // Check if GM manually changed the overdue amount vs auto value
+  const autoVal = existingT['_overdue_auto'];
+  const enteredVal = targets['finance_overdue_amount'];
+  if (autoVal && enteredVal && Math.round(enteredVal) !== Math.round(autoVal)) {
+    targets['_overdue_manual_override'] = true;
+  } else {
+    targets['_overdue_manual_override'] = false;
+  }
+  // Preserve auto metadata
+  if (existingT['_overdue_auto']) targets['_overdue_auto'] = existingT['_overdue_auto'];
+  if (existingT['_overdue_based_on']) targets['_overdue_based_on'] = existingT['_overdue_based_on'];
+  await saveTargets(targets);
+  closeTargetModal();
+  showToast('Targets saved for ' + currentMonthVal());
+  if (window._onTargetSave) window._onTargetSave();
+}
+
+// ─── TARGET VARIANCE BANNER (dept head sees after submitting) ─────────────────
+async function renderVarianceBanner(dept, containerEl) {
+  const targets = await getTargets();
+  const kpis = TARGET_KPIS[dept];
+  const month = currentMonthVal();
+  const monthLabel = new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+
+  // Check if any targets set for this dept
+  const hasTargets = kpis.some(k => targets[dept+'_'+k.key] !== undefined);
+  if (!hasTargets) {
+    containerEl.innerHTML = `<div class="target-banner" style="background:var(--surface2);">
+      <div style="font-size:12px;color:var(--text3);text-align:center;">No targets set for ${monthLabel} yet. Contact GM to set targets.</div>
+    </div>`;
+    return;
+  }
+
+  // Working days in month (Mon–Sat, Dubai work week)
+  const now = new Date();
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+  const dayOfMonth = now.getDate();
+  const workDaysTotal = Math.round(daysInMonth * 6/7);
+  const workDaysPassed = Math.round(dayOfMonth * 6/7);
+  const workDaysLeft = workDaysTotal - workDaysPassed;
+
+  let html = `<div class="target-banner">
+    <div class="target-banner-title">
+      <span>📊 Your targets — ${monthLabel}</span>
+      <span style="font-size:11px;color:var(--text3);">Day ${dayOfMonth} of ${daysInMonth} · ~${workDaysLeft} working days left</span>
+    </div>`;
+
+  for (const k of kpis) {
+    const target = targets[dept+'_'+k.key];
+    if (target === undefined) continue;
+    const actual = await getMTD(dept, k);
+    const pct = target > 0 ? Math.round((actual / target) * 100) : 0;
+    const expectedPct = target > 0 ? Math.round((workDaysPassed / workDaysTotal) * 100) : 0;
+
+    let statusColor, deltaText, barColor;
+    if (k.lowerBetter) {
+      // Lower is better (overdue, absences, out of stock)
+      const variance = target - actual;
+      if (actual <= target) {
+        statusColor = 'var(--success)'; barColor = '#1D9E75';
+        deltaText = actual === 0 ? '✓ None' : `✓ Within limit`;
+      } else {
+        statusColor = 'var(--danger)'; barColor = '#E24B4A';
+        deltaText = `▲ ${fmtVal(actual - target, k.unit)} over`;
+      }
+      const barPct = target > 0 ? Math.min(100, Math.round((actual/target)*100)) : (actual > 0 ? 100 : 0);
+      html += kpiRow(k, actual, target, barPct, barColor, statusColor, deltaText, k.unit);
+    } else {
+      // Higher is better
+      const variance = actual - (target * workDaysPassed / workDaysTotal);
+      if (pct >= expectedPct) {
+        statusColor = 'var(--success)'; barColor = '#1D9E75';
+        deltaText = pct >= 100 ? '✓ Target hit!' : `+${Math.round(variance*10)/10} ahead`;
+      } else if (pct >= expectedPct - 15) {
+        statusColor = 'var(--warning)'; barColor = '#E8A000';
+        deltaText = `${Math.round(Math.abs(variance)*10)/10} behind pace`;
+      } else {
+        statusColor = 'var(--danger)'; barColor = '#E24B4A';
+        deltaText = `▼ ${Math.round(Math.abs(variance)*10)/10} behind`;
+      }
+      html += kpiRow(k, actual, target, Math.min(100,pct), barColor, statusColor, deltaText, k.unit);
+    }
+  }
+
+  html += '</div>';
+  containerEl.innerHTML = html;
+}
+
+function fmtVal(v, unit) {
+  if (unit === 'AED') return 'AED ' + Math.round(v).toLocaleString();
+  return Math.round(v*10)/10 + ' ' + unit;
+}
+
+function kpiRow(k, actual, target, barPct, barColor, statusColor, deltaText, unit) {
+  return `<div class="target-kpi-row">
+    <div class="target-kpi-label">${k.label}</div>
+    <div class="target-kpi-bar-wrap">
+      <div class="target-kpi-meta">
+        <span>${fmtVal(actual, unit)} <span style="color:var(--text3);">/ ${fmtVal(target, unit)}</span></span>
+        <span>${barPct}%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:${barPct}%;background:${barColor};"></div></div>
+    </div>
+    <div class="target-kpi-delta" style="color:${statusColor};">${deltaText}</div>
+  </div>`;
+}
+
+
+
+// ─── LEGACY DEBT TRACKER ───────────────────────────────────────────────────────
+const DEBT_KEY = 'debt:legacy:2025';
+const DEBT_STARTING_BALANCE = 3300000;
+const DEBT_DEADLINE = 'December 2026';
+
+async function getDebtData() {
+  return await storageGet(DEBT_KEY) || {
+    startingBalance: DEBT_STARTING_BALANCE,
+    currentBalance: DEBT_STARTING_BALANCE,
+    entries: []
+  };
+}
+
+async function renderDebtTracker(el) {
+  const isGM = currentRole === 'gm';
+  el.innerHTML = `
+    <div class="page-header">
+      <div class="page-title">Legacy debt tracker</div>
+      <div class="page-sub">AED 3.3M outstanding · Target: cleared by ${DEBT_DEADLINE}</div>
+    </div>
+    <div id="debt-body"><div style="color:var(--text3);font-size:13px;padding:20px 0;">Loading...</div></div>`;
+
+  const data = await getDebtData();
+  const body = document.getElementById('debt-body');
+  const current = data.currentBalance;
+  const starting = data.startingBalance;
+  const recovered = starting - current;
+  const recoveredPct = Math.round((recovered / starting) * 100);
+  const remainingPct = 100 - recoveredPct;
+  const entries = (data.entries || []).slice().reverse();
+
+  // Colour based on progress
+  const barColor = recoveredPct >= 75 ? '#1D9E75' : recoveredPct >= 40 ? 'var(--brand)' : '#E8A000';
+
+  let html = `
+  <!-- Hero balance card -->
+  <div class="card" style="margin-bottom:16px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px;">
+      <div>
+        <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Starting balance</div>
+        <div style="font-size:22px;font-weight:600;font-family:var(--mono);color:var(--text);">AED ${fmtAED(starting)}</div>
+        <div style="font-size:11px;color:var(--text3);">As of May 2026</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Recovered so far</div>
+        <div style="font-size:22px;font-weight:600;font-family:var(--mono);color:var(--success);">AED ${fmtAED(recovered)}</div>
+        <div style="font-size:11px;color:var(--success);">${recoveredPct}% cleared</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Still outstanding</div>
+        <div style="font-size:22px;font-weight:600;font-family:var(--mono);color:${current>1000000?'var(--danger)':current>500000?'var(--warning)':'var(--success)'};">AED ${fmtAED(current)}</div>
+        <div style="font-size:11px;color:var(--text3);">Target: cleared by ${DEBT_DEADLINE}</div>
+      </div>
+    </div>
+
+    <!-- Main progress bar -->
+    <div style="margin-bottom:6px;">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:6px;">
+        <span>0 — Fully cleared</span>
+        <span>${recoveredPct}% recovered</span>
+        <span>AED 3.3M — Starting balance</span>
+      </div>
+      <div style="height:20px;background:var(--surface2);border-radius:10px;overflow:hidden;position:relative;">
+        <div style="height:100%;width:${recoveredPct}%;background:${barColor};border-radius:10px;transition:width 0.6s ease;"></div>
+        ${recoveredPct > 8 ? `<div style="position:absolute;left:${Math.min(recoveredPct-2,90)}%;top:50%;transform:translate(-50%,-50%);font-size:10px;font-weight:600;color:#fff;">${recoveredPct}%</div>` : ''}
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px;">
+        <span style="color:var(--success);">▰ Recovered: AED ${fmtAED(recovered)}</span>
+        <span style="color:var(--danger);">▰ Outstanding: AED ${fmtAED(current)}</span>
+      </div>
+    </div>
+
+    <!-- Month markers -->
+    <div style="display:flex;gap:4px;margin-top:14px;flex-wrap:wrap;">
+      ${['May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].map((m,i) => {
+        const isPast = i < new Date().getMonth() - 3; // rough
+        const isCurrent = m === new Date().toLocaleDateString('en-GB',{month:'short'});
+        return `<div style="flex:1;min-width:40px;text-align:center;padding:5px 4px;border-radius:var(--radius-sm);background:${isCurrent?'var(--brand-light)':isPast?'var(--success-bg)':'var(--surface2)'};border:1px solid ${isCurrent?'var(--brand)':isPast?'var(--success)':'var(--border)'};">
+          <div style="font-size:10px;font-weight:500;color:${isCurrent?'var(--brand)':isPast?'var(--success)':'var(--text3)'};">${m}</div>
+          <div style="font-size:9px;color:var(--text3);">2026</div>
+        </div>`;
+      }).join('')}
+      <div style="flex:1;min-width:40px;text-align:center;padding:5px 4px;border-radius:var(--radius-sm);background:var(--surface2);border:1px solid var(--brand);">
+        <div style="font-size:9px;font-weight:600;color:var(--brand);">🎯 TARGET</div>
+        <div style="font-size:9px;color:var(--brand);">Dec 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update form — Finance head or GM -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title">Record a collection</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:14px;">Every time you collect from a legacy debtor, record it here. The balance will drop automatically.</div>
+    <div class="form-grid" style="margin-bottom:12px;">
+      <div class="form-group">
+        <label class="form-label">Amount collected (AED)</label>
+        <input class="form-input" type="number" id="debt-amount" min="1" placeholder="e.g. 50000" oninput="previewDebtBalance()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Client name</label>
+        <input class="form-input" type="text" id="debt-client" placeholder="Which client paid?">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment date</label>
+        <input class="form-input" type="date" id="debt-date" value="${todayKey()}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">New balance preview</label>
+        <div class="form-input" id="debt-preview" style="background:var(--surface2);color:var(--text3);font-family:var(--mono);">AED ${fmtAED(current)}</div>
+      </div>
+    </div>
+    <div class="form-group full" style="margin-bottom:14px;">
+      <label class="form-label">Notes (optional)</label>
+      <input class="form-input" type="text" id="debt-notes" placeholder="e.g. Partial payment per agreement. Balance AED 120,000 still pending.">
+    </div>
+    <div style="display:flex;justify-content:flex-end;">
+      <button class="btn btn-primary" onclick="recordDebtCollection()">Record collection</button>
+    </div>
+  </div>
+
+  <!-- Collection history -->
+  <div class="card">
+    <div class="card-title">Collection history</div>
+    ${entries.length === 0
+      ? `<div class="empty-state"><div class="empty-state-text">No collections recorded yet. Record your first collection above.</div></div>`
+      : entries.map((e, i) => `
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--success-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round"><path d="M2 8l4 4 8-8"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+              <span style="font-size:13px;font-weight:600;color:var(--success);">+AED ${fmtAED(e.amount)} collected</span>
+              <span style="font-size:11px;color:var(--text3);">from ${e.client||'—'}</span>
+            </div>
+            <div style="font-size:11px;color:var(--text3);">${e.date} · Balance after: AED ${fmtAED(e.balanceAfter)} ${e.notes?'· '+e.notes:''}</div>
+          </div>
+          <div style="font-size:11px;color:var(--text3);text-align:right;flex-shrink:0;">Entry ${entries.length - i}</div>
+        </div>`).join('')}
+  </div>`;
+
+  body.innerHTML = html;
+}
+
+function previewDebtBalance() {
+  const amount = parseFloat(document.getElementById('debt-amount')?.value) || 0;
+  const preview = document.getElementById('debt-preview');
+  if (!preview) return;
+  getDebtData().then(data => {
+    const newBalance = Math.max(0, data.currentBalance - amount);
+    preview.textContent = 'AED ' + fmtAED(newBalance);
+    preview.style.color = newBalance < data.currentBalance ? 'var(--success)' : 'var(--text3)';
+  });
+}
+
+async function recordDebtCollection() {
+  const amount = parseFloat(document.getElementById('debt-amount')?.value);
+  const client = document.getElementById('debt-client')?.value.trim();
+  const date = document.getElementById('debt-date')?.value || todayKey();
+  const notes = document.getElementById('debt-notes')?.value.trim();
+
+  if (!amount || amount <= 0) { showToast('Please enter a valid amount'); return; }
+  if (!client) { showToast('Please enter the client name'); return; }
+
+  const data = await getDebtData();
+  const newBalance = Math.max(0, data.currentBalance - amount);
+
+  data.entries.push({
+    amount, client, date, notes,
+    balanceAfter: newBalance,
+    recordedBy: currentRole,
+    recordedAt: new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})
+  });
+  data.currentBalance = newBalance;
+
+  const ok = await storageSet(DEBT_KEY, data);
+  if (ok) {
+    showToast('AED ' + fmtAED(amount) + ' recorded · New balance: AED ' + fmtAED(newBalance));
+    renderDebtTracker(document.querySelector('.view.active'));
+  } else {
+    showToast('Error saving — please try again');
+  }
+}
+
+// ─── 2025 BACKLOG TRACKER ──────────────────────────────────────────────────────
+const BACKLOG_KEY = 'backlog:2025:ops';
+const BACKLOG_REPLY_KEY = 'backlog:2025:replies';
+
+async function getBacklogUpdates() {
+  return await storageGet(BACKLOG_KEY) || { updates: [], currentPct: 0 };
+}
+async function getBacklogReplies() {
+  return await storageGet(BACKLOG_REPLY_KEY) || {};
+}
+
+// ─── OPS VIEW — Update backlog ─────────────────────────────────────────────────
+async function renderOpsBacklog(el) {
+  el.innerHTML = `<div class="page-header"><div class="page-title">2025 Backlog tracker</div><div class="page-sub">Update your overall completion % weekly · GM can see all progress</div></div><div id="backlog-body"><div style="color:var(--text3);font-size:13px;padding:20px 0;">Loading...</div></div>`;
+  const data = await getBacklogUpdates();
+  const replies = await getBacklogReplies();
+  const current = data.currentPct || 0;
+  const updates = data.updates || [];
+  const body = document.getElementById('backlog-body');
+
+  // Check if updated this week already
+  const thisWeek = getWeekKey();
+  const updatedThisWeek = updates.some(u => u.week === thisWeek);
+
+  let html = `
+  <!-- Current progress bar -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title">Overall 2025 backlog completion</div>
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px;">
+        <div style="font-size:42px;font-weight:600;font-family:var(--mono);color:${current>=100?'var(--success)':current>=60?'var(--brand)':'var(--text)'};">${current}%</div>
+        <div style="font-size:12px;color:var(--text3);text-align:right;">Started tracking<br>${updates.length>0?fmtDate(new Date(updates[0].date+'T12:00:00')):'Not yet'}</div>
+      </div>
+      <div class="bar-track" style="height:14px;border-radius:7px;">
+        <div class="bar-fill" style="width:${current}%;height:14px;border-radius:7px;background:${current>=100?'#1D9E75':current>=60?'var(--brand)':current>=30?'#E8A000':'#E24B4A'};transition:width 0.6s ease;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px;"><span>0%</span><span>50%</span><span>100%</span></div>
+    </div>
+    ${current >= 100 ? `<div style="background:var(--success-bg);color:var(--success);padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;text-align:center;">🎉 All 2025 backlog jobs completed!</div>` : ''}
+  </div>
+
+  <!-- Weekly update form -->
+  ${current < 100 ? `
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title">
+      Submit weekly update
+      ${updatedThisWeek ? `<span class="pill pill-green">Updated this week</span>` : `<span class="pill pill-amber">Not updated yet this week</span>`}
+    </div>
+    ${updatedThisWeek ? `<div style="font-size:12px;color:var(--text3);margin-bottom:14px;">You already submitted an update this week. You can still update if the % has changed.</div>` : ''}
+    <div class="form-group" style="margin-bottom:12px;">
+      <label class="form-label">Overall completion % as of today</label>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <input class="form-input" type="range" id="backlog-slider" min="${current}" max="100" value="${current}" style="flex:1;accent-color:var(--brand);" oninput="document.getElementById('backlog-pct-display').textContent=this.value+'%'">
+        <div id="backlog-pct-display" style="font-size:20px;font-weight:600;font-family:var(--mono);color:var(--brand);width:56px;text-align:right;">${current}%</div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px;">Slide to update — cannot go below current ${current}%</div>
+    </div>
+    <div class="form-group" style="margin-bottom:14px;">
+      <label class="form-label">What did you work on this week? (required)</label>
+      <textarea class="form-input" id="backlog-notes" rows="3" placeholder="e.g. Completed 3 pending corrective jobs at Al Barsha. Followed up on 2 outstanding inspections. Still pending: Marina project snag list..."></textarea>
+    </div>
+    <div style="display:flex;justify-content:flex-end;">
+      <button class="btn btn-primary" onclick="submitBacklogUpdate()">Submit weekly update</button>
+    </div>
+  </div>` : ''}
+
+  <!-- Update history -->
+  <div class="card">
+    <div class="card-title">Weekly update history</div>
+    ${updates.length === 0 ? `<div class="empty-state"><div class="empty-state-text">No updates submitted yet. Submit your first update above.</div></div>` :
+    updates.slice().reverse().map(u => {
+      const reply = replies[u.week];
+      return `<div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text);">Week of ${u.weekLabel}</div>
+            <div style="font-size:11px;color:var(--text3);">Submitted ${u.date}</div>
+          </div>
+          <div style="font-size:28px;font-weight:600;font-family:var(--mono);color:var(--brand);">${u.pct}%</div>
+        </div>
+        <div class="bar-track" style="margin-bottom:10px;">
+          <div class="bar-fill" style="width:${u.pct}%;background:${u.pct>=100?'#1D9E75':u.pct>=60?'var(--brand)':'#E8A000'};"></div>
+        </div>
+        <div style="font-size:12px;color:var(--text);font-style:italic;padding:8px 10px;background:var(--surface2);border-radius:var(--radius-sm);">"${u.notes}"</div>
+        ${reply ? `<div class="gm-reply-block" style="margin-top:10px;"><div class="gm-reply-label">GM comment · ${reply.time||''}</div><div class="gm-reply-text">${reply.text}</div></div>` :
+        `<div style="font-size:11px;color:var(--text3);margin-top:8px;padding:8px 10px;background:var(--surface2);border-radius:var(--radius-sm);">No GM comment yet</div>`}
+      </div>`;
+    }).join('')}
+  </div>`;
+
+  body.innerHTML = html;
+}
+
+async function submitBacklogUpdate() {
+  const pct = parseInt(document.getElementById('backlog-slider').value);
+  const notes = document.getElementById('backlog-notes').value.trim();
+  if (!notes) { showToast('Please add notes about what was done this week'); return; }
+
+  const data = await getBacklogUpdates();
+  const weekKey = getWeekKey();
+  const weekLabel = getWeekLabel();
+  const today = todayKey();
+
+  // Remove existing update for this week if any (allow resubmit)
+  data.updates = (data.updates || []).filter(u => u.week !== weekKey);
+  data.updates.push({ week: weekKey, weekLabel, pct, notes, date: today });
+  data.currentPct = pct;
+
+  const ok = await storageSet(BACKLOG_KEY, data);
+  if (ok) {
+    showToast('Backlog update submitted — ' + pct + '% complete');
+    renderOpsBacklog(document.querySelector('.view.active'));
+  } else {
+    showToast('Error saving — please try again');
+  }
+}
+
+// ─── GM VIEW — See backlog + comment ──────────────────────────────────────────
+async function renderGMBacklog(el) {
+  el.innerHTML = `<div class="page-header"><div class="page-title">2025 Backlog tracker</div><div class="page-sub">Operations team's progress on all overdue 2025 jobs</div></div><div id="gm-backlog-body"><div style="color:var(--text3);font-size:13px;padding:20px 0;">Loading...</div></div>`;
+  const data = await getBacklogUpdates();
+  const replies = await getBacklogReplies();
+  const current = data.currentPct || 0;
+  const updates = (data.updates || []).slice().reverse();
+  const body = document.getElementById('gm-backlog-body');
+
+  // Week-on-week progress chart data
+  const sorted = (data.updates || []).slice().sort((a,b) => a.date.localeCompare(b.date));
+
+  let html = `
+  <!-- Hero progress -->
+  <div class="two-col" style="margin-bottom:16px;">
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-title">Overall completion</div>
+      <div style="font-size:52px;font-weight:600;font-family:var(--mono);color:${current>=100?'var(--success)':current>=60?'var(--brand)':'var(--text)'};line-height:1;margin-bottom:12px;">${current}%</div>
+      <div class="bar-track" style="height:12px;border-radius:6px;margin-bottom:8px;">
+        <div class="bar-fill" style="width:${current}%;height:12px;border-radius:6px;background:${current>=100?'#1D9E75':current>=60?'var(--brand)':current>=30?'#E8A000':'#E24B4A'};"></div>
+      </div>
+      <div style="font-size:12px;color:var(--text2);">${100-current}% remaining · ${updates.length} weekly updates submitted</div>
+    </div>
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-title">Weekly progress</div>
+      ${sorted.length < 2 ? `<div style="color:var(--text3);font-size:12px;">Need at least 2 weekly updates to show trend.</div>` :
+      `<div style="display:flex;align-items:flex-end;gap:4px;height:80px;padding-top:8px;">
+        ${sorted.map(u => {
+          const h = Math.max(4, Math.round((u.pct/100)*80));
+          return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+            <div style="font-size:9px;color:var(--text3);">${u.pct}%</div>
+            <div style="width:100%;height:${h}px;background:var(--brand);border-radius:3px 3px 0 0;opacity:0.8;"></div>
+            <div style="font-size:8px;color:var(--text3);writing-mode:vertical-lr;transform:rotate(180deg);height:28px;">${u.weekLabel.split(' ')[0]}</div>
+          </div>`;
+        }).join('')}
+      </div>`}
+    </div>
+  </div>
+
+  <!-- Weekly updates with GM comment -->
+  <div class="card">
+    <div class="card-title">Weekly updates & your comments</div>
+    ${updates.length === 0 ? `<div class="empty-state"><div class="empty-state-text">Operations has not submitted any backlog updates yet.</div></div>` :
+    updates.map(u => {
+      const reply = replies[u.week];
+      return `<div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div>
+            <div style="font-size:13px;font-weight:600;">Week of ${u.weekLabel}</div>
+            <div style="font-size:11px;color:var(--text3);">Submitted ${u.date}</div>
+          </div>
+          <div style="font-size:32px;font-weight:600;font-family:var(--mono);color:var(--brand);">${u.pct}%</div>
+        </div>
+        <div class="bar-track" style="margin-bottom:10px;">
+          <div class="bar-fill" style="width:${u.pct}%;background:${u.pct>=100?'#1D9E75':u.pct>=60?'var(--brand)':'#E8A000'};"></div>
+        </div>
+        <div style="font-size:12px;color:var(--text);font-style:italic;padding:10px;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:10px;">"${u.notes}"</div>
+        ${reply ? `<div class="gm-reply-block"><div class="gm-reply-label">Your comment · ${reply.time||''}</div><div class="gm-reply-text">${reply.text}</div></div>` : ''}
+        <div style="margin-top:10px;">
+          <div style="font-size:12px;font-weight:600;margin-bottom:6px;">${reply?'Update comment':'Add comment'}</div>
+          <textarea class="form-input" id="bl-reply-${u.week}" style="width:100%;margin-bottom:6px;" placeholder="Comment on this week's progress...">${reply?reply.text:''}</textarea>
+          <div style="display:flex;justify-content:flex-end;">
+            <button class="btn btn-primary btn-sm" onclick="submitBacklogReply('${u.week}')">Send comment</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+
+  body.innerHTML = html;
+}
+
+async function submitBacklogReply(weekKey) {
+  const text = document.getElementById('bl-reply-'+weekKey)?.value.trim();
+  if (!text) return;
+  const replies = await getBacklogReplies();
+  replies[weekKey] = { text, time: new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) };
+  const ok = await storageSet(BACKLOG_REPLY_KEY, replies);
+  if (ok) {
+    showToast('Comment sent to Operations');
+    renderGMBacklog(document.querySelector('.view.active'));
+  }
+}
+
+function getWeekKey() {
+  const d = new Date();
+  const startOfYear = new Date(d.getFullYear(), 0, 1);
+  const week = Math.ceil(((d - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
+  return d.getFullYear() + '-W' + String(week).padStart(2,'0');
+}
+function getWeekLabel() {
+  const d = new Date();
+  const day = d.getDay();
+  const mon = new Date(d); mon.setDate(d.getDate() - (day===0?6:day-1));
+  const sun = new Date(mon); sun.setDate(mon.getDate()+6);
+  return mon.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ' – ' + sun.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+}
+
+// ─── BACKFILL FORM ─────────────────────────────────────────────────────────────
+async function renderBackfill(el) {
+  const dept = currentRole;
+  const form = DEPT_FORMS[dept];
+
+  // Build date options — last 30 days excluding today
+  const dateOptions = [];
+  for (let i = 1; i <= 30; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const val = d.toISOString().slice(0,10);
+    const label = d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
+    dateOptions.push({ val, label });
+  }
+
+  let html = `
+  <div class="page-header">
+    <div class="page-title">Backfill a past report</div>
+    <div class="page-sub">${form.label} · Submit or update a report for a previous date</div>
+  </div>
+  <div style="background:var(--warning-bg);border:1px solid #E8C96A;border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--warning);">
+    <strong>Note:</strong> Use this only to fill in missing past reports. Today's report should be submitted from the Daily report tab.
+  </div>
+  <div class="card">
+    <div class="sec-label">Select date to backfill</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+      <select class="form-input" id="backfill-date" style="width:280px;" onchange="loadBackfillForm()">
+        <option value="">— Choose a date —</option>
+        ${dateOptions.map(d=>`<option value="${d.val}">${d.label}</option>`).join('')}
+      </select>
+      <span id="backfill-exists-badge" style="display:none;"></span>
+    </div>
+    <div id="backfill-form-area"></div>
+  </div>`;
+
+  el.innerHTML = html;
+}
+
+async function loadBackfillForm() {
+  const dept = currentRole;
+  const form = DEPT_FORMS[dept];
+  const dateVal = document.getElementById('backfill-date').value;
+  const area = document.getElementById('backfill-form-area');
+  const badge = document.getElementById('backfill-exists-badge');
+
+  if (!dateVal) { area.innerHTML = ''; badge.style.display = 'none'; return; }
+
+  area.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:10px 0;">Loading...</div>';
+
+  const existing = await storageGet(submissionKey(dept, dateVal));
+  const displayDate = fmtDate(new Date(dateVal + 'T12:00:00'));
+
+  // Show badge
+  badge.style.display = 'inline-block';
+  if (existing) {
+    badge.innerHTML = `<span class="pill pill-amber">Report already exists for this date — submitting will overwrite it</span>`;
+  } else {
+    badge.innerHTML = `<span class="pill pill-green">No report yet for this date</span>`;
+  }
+
+  let formHtml = `<div style="border-top:1px solid var(--border);padding-top:16px;margin-top:4px;">
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px;">
+      Filling report for: <span style="color:var(--brand);">${displayDate}</span>
+    </div>
+    <form id="backfill-report-form">`;
+
+  form.sections.forEach(sec => {
+    formHtml += `<div class="sec-label">${sec.title}</div><div class="${sec.title==='Notes'?'':'form-grid'}" style="${sec.title==='Notes'?'':'margin-bottom:14px;'}">`;
+    sec.fields.forEach(f => {
+      const val = existing ? (existing[f.key] || '') : '';
+      if (f.type === 'textarea') {
+        formHtml += `<div class="form-group full"><label class="form-label">${f.label}</label><textarea class="form-input" name="${f.key}" rows="3" placeholder="Optional notes...">${val}</textarea></div>`;
+      } else if (f.type === 'select') {
+        formHtml += `<div class="form-group"><label class="form-label">${f.label}</label><select class="form-input" name="${f.key}">${f.options.map(o=>`<option${val===o?' selected':''}>${o}</option>`).join('')}</select></div>`;
+      } else {
+        formHtml += `<div class="form-group"><label class="form-label">${f.label}</label><input class="form-input" type="number" name="${f.key}" min="0" value="${val}" placeholder="0"></div>`;
+      }
+    });
+    formHtml += '</div>';
+  });
+
+  formHtml += `<div style="display:flex;justify-content:flex-end;gap:8px;padding-top:4px;border-top:1px solid var(--border);margin-top:8px;">
+    <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('backfill-report-form').reset()">Clear</button>
+    <button type="button" class="btn btn-primary" onclick="submitBackfill('${dept}','${dateVal}')">
+      ${existing ? 'Update report' : 'Submit backfill report'}
+    </button>
+  </div>
+  </form></div>`;
+
+  area.innerHTML = formHtml;
+}
+
+async function submitBackfill(dept, dateVal) {
+  const btns = document.querySelectorAll('#backfill-report-form .btn-primary');
+  btns.forEach(b => { b.disabled = true; b.textContent = 'Saving...'; });
+
+  const form = document.getElementById('backfill-report-form');
+  const data = {
+    _time: new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),
+    _date: dateVal,
+    _backfilled: true,
+    _backfilled_on: todayKey()
+  };
+  form.querySelectorAll('input[type=number]').forEach(i => { if(i.name) data[i.name] = i.value || '0'; });
+  form.querySelectorAll('input[type=text]').forEach(i => { if(i.name) data[i.name] = i.value; });
+  form.querySelectorAll('select').forEach(i => { if(i.name) data[i.name] = i.value; });
+  form.querySelectorAll('textarea').forEach(i => { if(i.name) data[i.name] = i.value; });
+
+  // For HR — compute and store attendance_pct on backfill
+  if (dept === 'hr' && data.total_headcount && parseFloat(data.total_headcount) > 0) {
+    data._attendance_pct = Math.round((parseFloat(data.present||0) / parseFloat(data.total_headcount)) * 1000) / 10;
+  }
+  const ok = await storageSet(submissionKey(dept, dateVal), data);
+  btns.forEach(b => { b.disabled = false; });
+
+  if (ok) {
+    showToast('Backfill report saved for ' + fmtDate(new Date(dateVal + 'T12:00:00')));
+    // reset date picker and form area
+    document.getElementById('backfill-date').value = '';
+    document.getElementById('backfill-form-area').innerHTML = '';
+    document.getElementById('backfill-exists-badge').style.display = 'none';
+  } else {
+    showToast('Error saving — please try again');
+    btns.forEach(b => { b.textContent = 'Submit backfill report'; });
+  }
+}
+
+
+// ─── EXPORT MONTHLY DATA ───────────────────────────────────────────────────────
+async function exportMonthData() {
+  const sel = document.getElementById('export-month-sel');
+  const monthVal = sel.value; // e.g. "2026-05"
+  const [year, month] = monthVal.split('-');
+  const monthName = new Date(parseInt(year), parseInt(month)-1, 1)
+    .toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+
+  const btn = document.getElementById('export-btn');
+  const btnText = document.getElementById('export-btn-text');
+  const status = document.getElementById('export-status');
+  btn.disabled = true;
+  btnText.textContent = 'Preparing...';
+  status.textContent = 'Collecting data from all departments...';
+
+  const depts = ['ops','sales','finance','procurement','hr'];
+  const deptLabels = { ops:'Operations', sales:'Sales & Estimation', finance:'Finance & Admin', procurement:'Procurement & Store', hr:'HR' };
+
+  // collect all data for the month
+  const allData = {};
+  for (const dept of depts) {
+    const keys = await storageList('sub:'+dept+':');
+    const monthKeys = keys.filter(k => k.includes(':'+monthVal));
+    allData[dept] = [];
+    for (const k of monthKeys.sort()) {
+      const date = k.replace('sub:'+dept+':','');
+      const sub = await storageGet(k);
+      const reply = await storageGet('reply:'+dept+':'+date);
+      if (sub) allData[dept].push({ date, ...sub, gm_reply: reply ? reply.text : '' });
+    }
+  }
+
+  // check if there's any data
+  const totalRows = depts.reduce((s,d) => s + allData[d].length, 0);
+  if (totalRows === 0) {
+    status.textContent = 'No data found for ' + monthName + '. Nothing to export.';
+    btn.disabled = false;
+    btnText.textContent = 'Download Excel';
+    return;
+  }
+
+  status.textContent = `Found ${totalRows} submissions. Building Excel file...`;
+
+  // Build Excel using SheetJS (loaded via CDN)
+  try {
+    // Load SheetJS if not already loaded
+    if (typeof XLSX === 'undefined') {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    const wb = XLSX.utils.book_new();
+
+    // Summary sheet first
+    const summaryRows = [
+      ['AMTIDAAD Fire Safety — Monthly Data Export'],
+      ['Month:', monthName],
+      ['Exported on:', new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})],
+      ['Total submissions:', totalRows],
+      [],
+      ['Department', 'Days submitted', 'Days missing'],
+    ];
+    const daysInMonth = new Date(parseInt(year), parseInt(month), 0).getDate();
+    depts.forEach(d => {
+      summaryRows.push([deptLabels[d], allData[d].length, daysInMonth - allData[d].length]);
+    });
+    const summarySheet = XLSX.utils.aoa_to_sheet(summaryRows);
+    summarySheet['!cols'] = [{wch:40},{wch:20},{wch:20}];
+    XLSX.utils.book_append_sheet(wb, summarySheet, 'Summary');
+
+    // One sheet per department
+    for (const dept of depts) {
+      const rows = allData[dept];
+      if (!rows.length) continue;
+      const form = DEPT_FORMS[dept];
+
+      // Build header row
+      const headers = ['Date', 'Submitted at'];
+      const fieldKeys = ['date', '_time'];
+      form.sections.forEach(sec => {
+        sec.fields.forEach(f => {
+          if (f.key === 'notes') return;
+          headers.push(f.label);
+          fieldKeys.push(f.key);
+        });
+      });
+      headers.push('Notes to GM');
+      fieldKeys.push('notes');
+      headers.push('GM Comment');
+      fieldKeys.push('gm_reply');
+
+      const sheetData = [headers];
+      rows.forEach(row => {
+        sheetData.push(fieldKeys.map(k => {
+          if (k === 'date') return row.date;
+          return row[k] !== undefined ? row[k] : '';
+        }));
+      });
+
+      const ws = XLSX.utils.aoa_to_sheet(sheetData);
+      ws['!cols'] = fieldKeys.map((k,i) => ({ wch: i < 2 ? 16 : 22 }));
+      XLSX.utils.book_append_sheet(wb, ws, deptLabels[dept].substring(0,31));
+    }
+
+    // Download
+    const filename = 'AMTIDAAD_' + monthVal + '_' + monthName.replace(' ','_') + '.xlsx';
+    XLSX.writeFile(wb, filename);
+
+    status.innerHTML = '<span style="color:var(--success);font-weight:500;">✓ Downloaded: ' + filename + '</span>';
+  } catch(e) {
+    console.error(e);
+    status.innerHTML = '<span style="color:var(--danger);">Export failed. Please try again.</span>';
+  }
+
+  btn.disabled = false;
+  btnText.textContent = 'Download Excel';
+}
+
+
+// ─── ASYNC TARGETS PANEL LOADER ───────────────────────────────────────────────
+async function loadTargetsPanel(existingTargets, targetsSet, monthLabel) {
+  const placeholder = document.getElementById('targets-panel-placeholder');
+  if (!placeholder) return;
+
+  if (!targetsSet) {
+    placeholder.innerHTML = `<div style="background:var(--warning-bg);border:1px solid #E8C96A;border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:13px;color:var(--warning);">No targets set for ${monthLabel}</span>
+      <button class="btn btn-ghost btn-sm" onclick="showTargetModal('${monthLabel}', {}, () => showView('dashboard'))">Set targets now</button>
+    </div>`;
+    return;
+  }
+
+  const depts = ['ops','sales','finance','procurement','hr'];
+  const deptLabels = {ops:'Operations',sales:'Sales',finance:'Finance',procurement:'Procurement',hr:'HR'};
+  let cols = '';
+  for (const dept of depts) {
+    const kpis = TARGET_KPIS[dept];
+    let rows = '';
+    for (const k of kpis) {
+      const target = existingTargets[dept+'_'+k.key];
+      if (target === undefined) continue;
+      const actual = await getMTD(dept, k);
+      const pct = k.lowerBetter
+        ? (actual <= target ? 100 : Math.max(0, Math.round((target/actual)*100)))
+        : Math.min(100, target > 0 ? Math.round((actual/target)*100) : 0);
+      const color = k.lowerBetter
+        ? (actual <= target ? '#1D9E75' : '#E24B4A')
+        : (pct >= 80 ? '#1D9E75' : pct >= 50 ? '#E8A000' : '#E24B4A');
+      rows += `<div style="margin-bottom:8px;">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:2px;">${k.label}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color};"></div></div>
+        <div style="font-size:10px;margin-top:2px;color:${color};">${fmtVal(actual,k.unit)} / ${fmtVal(target,k.unit)}</div>
+      </div>`;
+    }
+    cols += `<div style="padding:10px;background:var(--surface2);border-radius:var(--radius-sm);">
+      <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:8px;">${deptLabels[dept]}</div>
+      ${rows || '<div style="font-size:11px;color:var(--text3);">No targets set</div>'}
+    </div>`;
+  }
+
+  placeholder.innerHTML = `<div class="card" style="margin-bottom:0;">
+    <div class="card-title">Monthly targets — ${monthLabel}
+      <button class="btn btn-ghost btn-sm" onclick="showTargetModal('${monthLabel}', {}, () => showView('dashboard'))">Edit targets</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">${cols}</div>
+  </div>`;
+}
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+function num(v) { return parseFloat(v)||0; }
+function fmtAED(n) { return Math.round(n).toLocaleString(); }
+function fmtDate(d) {
+  return d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Dubai'});
+}
+function greeting() {
+  const now = new Date();
+  const dubai = new Date(now.getTime() + (4 * 60 * 60 * 1000));
+  const h = dubai.getUTCHours();
+  return h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
